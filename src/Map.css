@@ -4,10 +4,10 @@
   
   .locate-button {
     position: absolute;
-    bottom: 25px;
+    bottom: 95px;
     background-color: transparent;
     border-style: none;
-    right: 10px;
+    right: 4.5px;
     z-index: 1000; 
   }
 
@@ -23,5 +23,21 @@
 
   .location-icon:hover {
     background-color: #d4d4d4;
+  }
+
+  .user-button {
+    position: absolute;
+    top: 10px;
+    background-color: transparent;
+    border-style: none;
+    right: 5px;
+    z-index: 1000;
+  }
+
+  .user-icon {
+    cursor: pointer;
+    height: 2.5em;
+    background-color: white;
+    border-radius: 50%;
   }
   
