@@ -1,10 +1,12 @@
-import { MapContainer, Marker, Popup, TileLayer, ZoomControl } from "react-leaflet";
+import { MapContainer, Marker, Popup, TileLayer, ZoomControl, useMap } from "react-leaflet";
+import { GeoSearchControl, MapBoxProvider } from "leaflet-geosearch";
 import { Icon } from 'leaflet';
 import { useState, useRef } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import '../Map.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Form from 'react-bootstrap/Form';
 
 // Función del Mapa
 function Map() {
@@ -12,7 +14,6 @@ function Map() {
   const [position, setPosition] = useState(null);
   // Estado para controlar la visibilidad del modal
   const [showModal, setShowModal] = useState(false);
-
   // Referencia al mapa
   const mapRef = useRef();
 
@@ -91,17 +92,33 @@ function Map() {
         <img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" className="user-icon"></img>
       </Button>
 
+      <button className="button-add">
+        <img src="https://pixsector.com/cache/c5433603/av741f3e5fd1c88304cf8.png" className="add-icon">
+        </img>
+      </button>
+
       {/* Modal */}
       <Modal show={showModal} onHide={() => setShowModal(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>Ejemplo de Modal</Modal.Title>
+          <Modal.Title>Inicia sesión en MapAware</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          Contenido del modal
+          <Form>
+            <Form.Group className="mb-3" controlId="email">
+              <Form.Label>Correo Electrónico</Form.Label>
+              <Form.Control type="email" placeholder="name@example.com" autoFocus />
+
+              <Form.Group className="mb-3" controlId="password"></Form.Group>
+              <Form.Label>Contraseña</Form.Label>
+              <Form.Control type="password" />
+            </Form.Group>
+            <button className="forgotPswrd">Has olvidado tu contraseña?</button>
+            <button className="register-button">Registrate en MapAware</button>
+          </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowModal(false)}>
-            Cerrar
+          <Button variant="primary">
+            Iniciar sesión
           </Button>
         </Modal.Footer>
       </Modal>
@@ -122,7 +139,7 @@ function Map() {
         ))}
         {/* Marcador para la ubicación actual */}
         <LocateMarker position={position} />
-        <ZoomControl position="bottomright"/>
+        <ZoomControl className="zoomControl" position="bottomright"/>
       </MapContainer>
     </div>
   );
