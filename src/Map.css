@@ -73,13 +73,29 @@
     color: blue;
     border-style: none;
     background-color: transparent;
+    text-decoration-line: none;
   }
 
   .register-button {
     font-size: .8em;
     cursor: pointer;
-    margin-left: 10.9em;
+    margin-left: 13em;
     color: blue;
     border-style: none;
     background-color: transparent;
+    text-decoration-line: none;
+  }
+
+  #backButton {
+    position: absolute;
+    left: 15px;
+  }
+
+  #mapIncident {
+    height: 25em;
+    border-radius: 1em;
+  }
+
+  textarea {
+    resize: none!important;
   }
