@@ -1,12 +1,14 @@
 import { MapContainer, Marker, Popup, TileLayer, ZoomControl, useMap } from "react-leaflet";
 import { Icon } from 'leaflet';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import '../Map.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Form from 'react-bootstrap/Form';
 import { ModalBody, ModalFooter } from "react-bootstrap";
+import { GeoSearchControl, OpenStreetMapProvider } from "leaflet-geosearch";
+import "leaflet-geosearch/dist/geosearch.css";
 
 // Función del Mapa
 function Map() {
@@ -18,8 +20,44 @@ function Map() {
   const [showRegisterModal, setShowRegisterModal] = useState(false)
   // Estado para controlar la visibilidad del modal de subida de incidente
   const [showIncidentModal, setShowIncidentModal] = useState(false)
+  // Estado para mostrar la vista previa de la subida de imagen
+  const [imagePreview, setImagePreview] = useState(false)
+
+  // Icono para los marcadores
+  const CustomIcons = new Icon({
+    iconUrl: "https://cdn-icons-png.flaticon.com/512/447/447031.png",
+    iconSize: [19, 19]
+  });
+
+
+  function LeafletgeoSearch() {
+    const map = useMap();
+    useEffect(() => {
+      const provider = new OpenStreetMapProvider();
+  
+      const searchControl = new GeoSearchControl({
+        provider,
+        showMarker: false,
+        showPopup: false, 
+      });
+      map.addControl(searchControl);
+  
+      return () => map.removeControl(searchControl);
+    }, []);
+  
+    return null;
+  }
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.onload = () => {
+      setImagePreview(reader.result);
+    };
+    reader.readAsDataURL(file);
+  };
   const mapRef = useRef();
 
+  // Obtener centro del mapa del modal de "Añadir evento".
   function GetMapCenter() {
     const map = useMap();
     const [center, setCenter] = useState(null);
@@ -78,7 +116,8 @@ function Map() {
   const markers = [
     {
       geocode: [-34.601085, -58.383186],
-      popUp: "Teatro Colon"
+      popUp: "Teatro Colon",
+      descripcion: "El Teatro Colón de Buenos Aires es una de las salas de ópera más importantes del mundo. Su rico y prestigioso historial y las excepcionales condiciones acústicas y arquitectónicas de su edificio lo colocan al nivel de teatros como la Scala de Milán, la Ópera de París, la Ópera de Viena, el Covent Garden de Londres y el Metropolitan de Nueva York.",
     },
     {
       geocode: [-34.603851, -58.381775],
@@ -93,12 +132,6 @@ function Map() {
       popUp: "Mesquita Mönchengladbach"
     }
   ];
-
-  // Icono para los marcadores
-  const CustomIcons = new Icon({
-    iconUrl: "https://cdn-icons-png.flaticon.com/512/447/447031.png",
-    iconSize: [19, 19]
-  });
 
   return (
     <div className="map-container">
@@ -136,7 +169,7 @@ function Map() {
           <Form>
             <Form.Group className="mb-3">
               <Form.Label>Añade un titulo al incidente:</Form.Label>
-              <Form.Control type="text" controlId="titleIncident" />
+              <Form.Control type="text" controlId="titleIncident" placeholder="Ej: Choque triple de automóviles" />
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>¿Que clase de incidente ocurrio en esa ubicación?</Form.Label>
@@ -160,11 +193,15 @@ function Map() {
                 />
                 <GetMapCenter />
                 <ZoomControl className="zoomControl" position="bottomright"/>
+                <LeafletgeoSearch />
               </MapContainer>
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Sube una imagen del incidente (opcional)</Form.Label>
-              <Form.Control type="file" controlId="imageIncident" />
+              <Form.Control type="file" controlId="imageIncident" onChange={handleImageChange} />
+                {imagePreview && (
+                  <img src={imagePreview} alt="Vista previa de la imagen" style={{ width: '6.35rem', marginTop: '1em'}} />
+                )}
             </Form.Group>
           </Form>
         </Modal.Body>
@@ -204,7 +241,7 @@ function Map() {
           <Modal.Title>Registrate en MapAware</Modal.Title>
         </Modal.Header>
         <ModalBody>
-          <Form>
+          <Form method="post">
             <Form.Group className="mb-3">
               <Form.Label>Nombre</Form.Label>
               <Form.Control type="text" controlId="nombre" />
@@ -247,13 +284,15 @@ function Map() {
         {markers.map((marker, index) => (
           <Marker key={index} position={marker.geocode} icon={CustomIcons}>
             <Popup>
-              {marker.popUp}
+              <h3>{marker.popUp}</h3>
+              <p>{marker.descripcion}</p>
             </Popup>
           </Marker>
         ))}
         {/* Marcador para la ubicación actual */}
         <LocateMarker position={position} />
-        <ZoomControl className="zoomControl" position="bottomright"/>
+        <ZoomControl className="zoomControl" position="topleft"/>
+        <LeafletgeoSearch />
       </MapContainer>
     </div>
   );
