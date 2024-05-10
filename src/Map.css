@@ -64,22 +64,22 @@
   }
   
   .forgotPswrd {
-    font-size: .8em;
+    font-size: .8em!important;
     cursor: pointer;
     color: blue;
     border-style: none;
     background-color: transparent;
-    text-decoration-line: none;
+    text-decoration-line: none!important;
   }
 
   .register-button {
-    font-size: .8em;
+    font-size: .8em!important;
     cursor: pointer;
-    margin-left: 13em;
+    margin-left: 8.5em;
     color: blue;
     border-style: none;
     background-color: transparent;
-    text-decoration-line: none;
+    text-decoration-line: none!important;
   }
 
   #backButton {
