@@ -68,21 +68,50 @@ export function RegisterForm() {
 }
 
 export function LoginForm() {
+  const [formData, setFormData] = useState({
+    username: '',
+    password: '',
+  });
+
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      const response = await axios.post('http://localhost:8080/auth/login', formData);
+      console.log(response.data);
+
+      alert('Login successful!');
+
+    } catch (error) {
+      console.error(error.response.data);
+      setErrorMessage(error.response.data.message || 'Login failed');
+    }
+  };
+
   return (
-    <Form>
+    <Form onSubmit={handleSubmit}>
       <Form.Group className="mb-3">
-        <Form.Label>Correo Electrónico</Form.Label>
+        <Form.Label>Nombre de Usuario</Form.Label>
         <Form.Control
-          type="email"
-          placeholder="name@example.com"
-          controlId="email"
+          type="text"
+          placeholder="username"
+          controlId="username"
           autoFocus
+          value={formData.username}
+          onChange={(event) => setFormData({ ...formData, username: event.target.value })}
         />
       </Form.Group>
       <Form.Group className="mb-3">
         <Form.Label>Contraseña</Form.Label>
-        <Form.Control type="password" />
+        <Form.Control
+          type="password"
+          value={formData.password}
+          onChange={(event) => setFormData({ ...formData, password: event.target.value })}
+        />
       </Form.Group>
+        <button type="submit" className="btn btn-primary">Iniciar sesión</button>
     </Form>
   );
 }

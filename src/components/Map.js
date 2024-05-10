@@ -120,7 +120,6 @@ function Map() {
           alt=""
         ></img>
       </button>
-
       {/* Modal */}
       <Modal
         show={showIncidentModal}
