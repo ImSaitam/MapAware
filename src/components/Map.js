@@ -8,8 +8,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Form from "react-bootstrap/Form";
 import { ModalBody, ModalFooter } from "react-bootstrap";
 import "leaflet-geosearch/dist/geosearch.css";
-import GetMapCenter from "./getMapCenter.js";
 import LeafletgeoSearch from "./GeoSearch.js";
+import { AddIncident, LoginForm, RegisterForm } from "./forms.js";
 
 // Función del Mapa
 function Map() {
@@ -23,7 +23,6 @@ function Map() {
   // Estado para controlar la visibilidad del modal de subida de incidente
   const [showIncidentModal, setShowIncidentModal] = useState(false);
   // Estado para mostrar la vista previa de la subida de imagen
-  const [imagePreview, setImagePreview] = useState(false);
   const mapRef = useRef();
 
   // Icono para los marcadores
@@ -31,15 +30,6 @@ function Map() {
     iconUrl: "https://cdn-icons-png.flaticon.com/512/447/447031.png",
     iconSize: [19, 19],
   });
-
-  const handleImageChange = (event) => {
-    const file = event.target.files[0];
-    const reader = new FileReader();
-    reader.onload = () => {
-      setImagePreview(reader.result);
-    };
-    reader.readAsDataURL(file);
-  };
 
   // Icono para la ubicación actual
   const CurrentLocationIcon = new Icon({
@@ -140,76 +130,7 @@ function Map() {
           <Modal.Title>Añadir un incidente</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form>
-            <Form.Group className="mb-3">
-              <Form.Label>Añade un titulo al incidente:</Form.Label>
-              <Form.Control
-                type="text"
-                controlId="titleIncident"
-                placeholder="Ej: Choque triple de automóviles"
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>
-                ¿Que clase de incidente ocurrio en esa ubicación?
-              </Form.Label>
-              <select className="form-select form-select-sm">
-                {/* Agregar mas tipos de incidentes!!! */}
-                <option disabled selected>
-                  Tipo de incidente...
-                </option>
-                <option value={1}>Accidente</option>
-                <option value={2}>Asalto</option>
-                <option value={3}>Manifestación</option>
-                <option value={4}>Obras</option>
-                <option value={5}>Paro</option>
-                <option value={6}>Piquete</option>
-              </select>
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>
-                Añade una breve descripción del incidente.
-              </Form.Label>
-              <textarea
-                className="form-control"
-                controlId="descriptionIncident"
-                rows={3}
-              ></textarea>
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Ingrese la ubicación del incidente:</Form.Label>
-              <MapContainer
-                id="mapIncident"
-                center={[-34.603851, -58.381775]}
-                zoom={16}
-                ref={mapRef}
-                zoomControl={false}
-              >
-                <TileLayer
-                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                />
-                <GetMapCenter />
-                <ZoomControl className="zoomControl" position="bottomright" />
-                <LeafletgeoSearch />
-              </MapContainer>
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Sube una imagen del incidente (opcional)</Form.Label>
-              <Form.Control
-                type="file"
-                controlId="imageIncident"
-                onChange={handleImageChange}
-              />
-              {imagePreview && (
-                <img
-                  src={imagePreview}
-                  alt="Vista previa de la imagen"
-                  style={{ width: "6.35rem", marginTop: "1em" }}
-                />
-              )}
-            </Form.Group>
-          </Form>
+          <AddIncident />
         </Modal.Body>
         <ModalFooter>
           <Button variant="primary">Subir incidente</Button>
@@ -220,21 +141,10 @@ function Map() {
           <Modal.Title>Inicia sesión en MapAware</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form>
-            <Form.Group className="mb-3">
-              <Form.Label>Correo Electrónico</Form.Label>
-              <Form.Control
-                type="email"
-                placeholder="name@example.com"
-                controlId="email"
-                autoFocus
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Contraseña</Form.Label>
-              <Form.Control type="password" />
-            </Form.Group>
-            <Button
+          <LoginForm />
+        </Modal.Body>
+        <Modal.Footer>
+        <Button
               variant="link"
               className="forgotPswrd"
               onClick={() => {
@@ -254,9 +164,6 @@ function Map() {
             >
               Registrate en MapAware
             </Button>
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
           <Button variant="primary">Iniciar sesión</Button>
         </Modal.Footer>
       </Modal>
@@ -312,34 +219,7 @@ function Map() {
           <Modal.Title>Registrate en MapAware</Modal.Title>
         </Modal.Header>
         <ModalBody>
-          <Form>
-            <Form.Group className="mb-3">
-              <Form.Label>Nombre</Form.Label>
-              <Form.Control type="text" className="form-control" />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Apellido</Form.Label>
-              <Form.Control className="form-control" />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Fecha de nacimiento</Form.Label>
-              <Form.Control className="form-control" type="date" />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label for="exampleInputEmail1">
-                Correo Electrónico
-              </Form.Label>
-              <Form.Control
-                className="form-control"
-                type="email"
-                placeholder="name@example.com"
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label for="exampleInputPassword1">Contraseña</Form.Label>
-              <Form.Control className="form-control" type="password" />
-            </Form.Group>
-          </Form>
+          <RegisterForm />
         </ModalBody>
         <Modal.Footer>
           <Button
