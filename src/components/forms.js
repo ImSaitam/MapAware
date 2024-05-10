@@ -3,25 +3,51 @@ import LeafletgeoSearch from "./GeoSearch.js";
 import { MapContainer, TileLayer, ZoomControl, useMap, Marker } from "react-leaflet";
 import { useRef, useState } from "react";
 import { Icon } from "leaflet";
+import axios from 'axios';
 
 export function RegisterForm() {
+  const [formData, setFormData] = useState({
+    name: '',
+    lastName: '',
+    username: '',
+    birthdate: '',
+    email: '',
+    password: '',
+  });
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log('Form submitted!');
+    console.log(formData);
+
+    axios.post('http://localhost:8080/auth/register', formData)
+     .then(response => {
+        console.log(response);
+        alert('Registro exitoso!');
+      })
+     .catch(error => {
+        console.error(error);
+        alert('Error al registrar');
+      });
+  };
+
   return (
-    <Form>
+    <Form onSubmit={handleSubmit}>
       <Form.Group className="mb-3">
         <Form.Label>Nombre</Form.Label>
-        <Form.Control type="text" className="form-control" />
+        <Form.Control type="text" className="form-control" onChange={(event) => setFormData({...formData, name: event.target.value})} />
       </Form.Group>
       <Form.Group className="mb-3">
         <Form.Label>Apellido</Form.Label>
-        <Form.Control className="form-control" />
+        <Form.Control className="form-control" onChange={(event) => setFormData({...formData, lastName: event.target.value})} />
       </Form.Group>
       <Form.Group className="mb-3">
         <Form.Label>Nombre de usuario</Form.Label>
-        <Form.Control className="form-control" />
+        <Form.Control className="form-control" onChange={(event) => setFormData({...formData, username: event.target.value})} />
       </Form.Group>
       <Form.Group className="mb-3">
         <Form.Label>Fecha de nacimiento</Form.Label>
-        <Form.Control className="form-control" type="date" />
+        <Form.Control className="form-control" type="date" onChange={(event) => setFormData({...formData, birthdate: event.target.value})} />
       </Form.Group>
       <Form.Group className="mb-3">
         <Form.Label for="exampleInputEmail1">Correo Electrónico</Form.Label>
@@ -29,12 +55,14 @@ export function RegisterForm() {
           className="form-control"
           type="email"
           placeholder="name@example.com"
+          onChange={(event) => setFormData({...formData, email: event.target.value})}
         />
       </Form.Group>
       <Form.Group className="mb-3">
         <Form.Label for="exampleInputPassword1">Contraseña</Form.Label>
-        <Form.Control className="form-control" type="password" />
+        <Form.Control className="form-control" type="password" onChange={(event) => setFormData({...formData, password: event.target.value})} />
       </Form.Group>
+      <button type="submit" className="btn btn-primary">Registrarse</button>
     </Form>
   );
 }
