@@ -1,8 +1,8 @@
 import { Form } from "react-bootstrap";
 import LeafletgeoSearch from "./GeoSearch.js";
-import { MapContainer, TileLayer, ZoomControl } from "react-leaflet";
-import { useRef } from "react";
-import GetMapCenter from "./getMapCenter.js";
+import { MapContainer, TileLayer, ZoomControl, useMap, Marker } from "react-leaflet";
+import { useRef, useState } from "react";
+import { Icon } from "leaflet";
 
 export function RegisterForm() {
   return (
@@ -58,6 +58,29 @@ export function LoginForm() {
     </Form>
   );
 }
+
+function GetMapCenter() {
+    const map = useMap();
+    const [center, setCenter] = useState(null);
+    const newCenter = map.getCenter();
+  
+    const centerMapIcon = new Icon({
+      iconUrl:
+        "https://static-00.iconduck.com/assets.00/map-marker-icon-342x512-gd1hf1rz.png",
+      iconSize: [19, 28],
+    });
+  
+    const updateCenter = () => {
+      setCenter(newCenter);
+    };
+    map.on("move", updateCenter);
+  
+    return (
+      center && (
+        <Marker position={[center.lat, center.lng]} icon={centerMapIcon} />
+      )
+    );
+  }
 
 export function AddIncident() {
   const mapRef = useRef();
