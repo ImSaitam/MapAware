@@ -8,7 +8,7 @@ import axios from 'axios';
 export function RegisterForm() {
   const [formData, setFormData] = useState({
     name: '',
-    lastName: '',
+    lastname: '',
     username: '',
     birthdate: '',
     email: '',
