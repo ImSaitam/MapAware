@@ -1,10 +1,9 @@
 import './App.css';
-import Map from './components/Map'
+import { LoginForm } from './components/login.js';
+import { Map } from './components/Map.js'
 
-function App() {
-  return (
-    <Map />
+export default function App() {
+    return (
+    <LoginForm />
   );
 }
-
-export default App;

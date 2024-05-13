@@ -5,11 +5,10 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import "../Map.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Form from "react-bootstrap/Form";
 import { ModalBody, ModalFooter } from "react-bootstrap";
 import "leaflet-geosearch/dist/geosearch.css";
 import LeafletgeoSearch from "./GeoSearch.js";
-import { AddIncident, LoginForm, RegisterForm } from "./forms.js";
+import { AddIncident } from "./forms.js";
 
 // Función del Mapa
 function Map() {
@@ -17,9 +16,6 @@ function Map() {
   const [position, setPosition] = useState(null);
   // Estado para controlar la visibilidad del modal
   const [showModal, setShowModal] = useState(false);
-  // Estado para controlar la visibilidad del modal de registro
-  const [showRegisterModal, setShowRegisterModal] = useState(false);
-  const [showForgotPswdModal, setShowForgotPswdModal] = useState(false);
   // Estado para controlar la visibilidad del modal de subida de incidente
   const [showIncidentModal, setShowIncidentModal] = useState(false);
   // Estado para mostrar la vista previa de la subida de imagen
@@ -135,106 +131,7 @@ function Map() {
           <Button variant="primary">Subir incidente</Button>
         </ModalFooter>
       </Modal>
-      <Modal show={showModal} onHide={() => setShowModal(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Inicia sesión en MapAware</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <LoginForm />
-        </Modal.Body>
-        <Modal.Footer>
-        <Button
-              variant="link"
-              className="forgotPswrd"
-              onClick={() => {
-                setShowModal(false);
-                setShowForgotPswdModal(true);
-              }}
-            >
-              Has olvidado tu contraseña?
-            </Button>
-            <Button
-              variant="link"
-              className="register-button"
-              onClick={() => {
-                setShowModal(false);
-                setShowRegisterModal(true);
-              }}
-            >
-              Registrate en MapAware
-            </Button>
-          <Button variant="primary">Iniciar sesión</Button>
-        </Modal.Footer>
-      </Modal>
-      <Modal
-        show={showForgotPswdModal}
-        onHide={() => setShowForgotPswdModal(false)}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>Has olvidado tu contraseña?</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form>
-            <Form.Group className="mb-3">
-              <Form.Label>
-                Ingrese el correo electrónico de tu cuenta.
-              </Form.Label>
-              <Form.Control
-                type="email"
-                placeholder="name@example.com"
-                controlId="email"
-              ></Form.Control>
-            </Form.Group>
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button
-            variant="secondary"
-            id="backButton"
-            onClick={() => {
-              setShowModal(true);
-              setShowForgotPswdModal(false);
-            }}
-          >
-            Volver
-          </Button>
-          <Button
-            variant="primary"
-            onClick={() => {
-              setShowModal(true);
-              setShowForgotPswdModal(false);
-            }}
-          >
-            Continuar
-          </Button>
-        </Modal.Footer>
-      </Modal>
-
-      <Modal
-        show={showRegisterModal}
-        onHide={() => setShowRegisterModal(false)}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>Registrate en MapAware</Modal.Title>
-        </Modal.Header>
-        <ModalBody>
-          <RegisterForm />
-        </ModalBody>
-        <Modal.Footer>
-          <Button
-            variant="secondary"
-            id="backButton"
-            onClick={() => {
-              setShowModal(true);
-              setShowRegisterModal(false);
-            }}
-          >
-            Volver
-          </Button>
-          <Button variant="primary">Registrarse</Button>
-        </Modal.Footer>
-      </Modal>
-
+    
       {/* Mapa */}
       <MapContainer
         center={[-34.603851, -58.381775]}

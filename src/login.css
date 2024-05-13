@@ -1,0 +1,10 @@
+.centerForm {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.loginForm Button {
+    margin: 0 1em 0 1em;
+}
