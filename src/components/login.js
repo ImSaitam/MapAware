@@ -60,9 +60,6 @@ useEffect(() => {
 
   return (
     <div className="centerForm">
-      {isRegisterFormOpen ? (
-        <RegisterForm onClose={() => setIsRegisterFormOpen(false)} onRegisterSuccess={handleRegisterSuccess} />
-      ) : (
         <Form onSubmit={handleSubmit} className="loginForm">
           <Form.Group className="mb-3">
             <Form.Label>Nombre de Usuario</Form.Label>
@@ -93,7 +90,6 @@ useEffect(() => {
           </Link>
           {errorMessage && <p className="error-message">{errorMessage}</p>}
         </Form>
-      )}
     </div>
   );
 }

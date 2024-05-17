@@ -1,74 +1,96 @@
+import { useState, useRef } from "react";
 import { Form } from "react-bootstrap";
 import LeafletgeoSearch from "./GeoSearch.js";
 import { MapContainer, TileLayer, ZoomControl, useMap, Marker } from "react-leaflet";
-import { useRef, useState } from "react";
 import { Icon } from "leaflet";
+import axios from "axios";
 
-function GetMapCenter() {
-    const map = useMap();
-    const [center, setCenter] = useState(null);
+function GetMapCenter({ setCenter }) {
+  const map = useMap();
+  const [center, setMapCenter] = useState(map.getCenter());
+
+  const centerMapIcon = new Icon({
+    iconUrl: "https://static-00.iconduck.com/assets.00/map-marker-icon-342x512-gd1hf1rz.png",
+    iconSize: [19, 28],
+  });
+
+  const updateCenter = () => {
     const newCenter = map.getCenter();
-  
-    const centerMapIcon = new Icon({
-      iconUrl:
-        "https://static-00.iconduck.com/assets.00/map-marker-icon-342x512-gd1hf1rz.png",
-      iconSize: [19, 28],
-    });
-  
-    const updateCenter = () => {
-      setCenter(newCenter);
-    };
-    map.on("move", updateCenter);
-  
-    return (
-      center && (
-        <Marker position={[center.lat, center.lng]} icon={centerMapIcon} />
-      )
-    );
-  }
+    setMapCenter(newCenter);
+    setCenter(newCenter);
+  };
 
-export function AddIncident() {
+  map.on("moveend", updateCenter);
+
+  return center && <Marker position={[center.lat, center.lng]} icon={centerMapIcon} />;
+}
+
+export function AddIncident({ onEventAdded, setShowIncidentModal }) {
   const mapRef = useRef();
+
+  const [event, setEvent] = useState({
+    category: "",
+    degree: "",
+    description: "",
+    latitude: null,
+    longitude: null,
+  });
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log("Submitting event:", event); // Debug log
+
+    try {
+      const response = await axios.post("http://localhost:8080/event", event, 
+      {headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }}
+      );
+      console.log("Incident added:", response.data);
+      onEventAdded(); // Llama la función callback después de añadir un evento
+    } catch (error) {
+      console.error("There was an error adding the incident!", error);
+    }
+  };
+
   return (
-    <Form>
+    <Form onSubmit={handleSubmit}>
       <Form.Group className="mb-3">
-        <Form.Label>Añade un titulo al incidente:</Form.Label>
+        <Form.Label>¿Qué clase de incidente ocurrió en esa ubicación?</Form.Label>
         <Form.Control
-          type="text"
-          controlId="titleIncident"
-          placeholder="Ej: Choque triple de automóviles"
+          as="select"
+          value={event.category}
+          onChange={(e) => setEvent({ ...event, category: e.target.value })}
+        >
+          <option disabled value="">
+            Tipo de incidente...
+          </option>
+          <option value="Accidente">Accidente</option>
+          <option value="Asalto">Asalto</option>
+          <option value="Manifestación">Manifestación</option>
+          <option value="Obras">Obras</option>
+          <option value="Paro">Paro</option>
+          <option value="Piquete">Piquete</option>
+        </Form.Control>
+      </Form.Group>
+      <Form.Group className="mb-3">
+        <Form.Label>Gravedad</Form.Label>
+        <Form.Range
+          min={1}
+          max={5}
+          value={event.degree}
+          onChange={(e) => setEvent({ ...event, degree: e.target.value })}
         />
       </Form.Group>
       <Form.Group className="mb-3">
-        <Form.Label>
-          ¿Que clase de incidente ocurrio en esa ubicación?
-        </Form.Label>
-        <select className="form-select form-select-sm">
-          {/* Agregar mas tipos de incidentes!!! */}
-          <option disabled selected>
-            Tipo de incidente...
-          </option>
-          <option value={1}>Accidente</option>
-          <option value={2}>Asalto</option>
-          <option value={3}>Manifestación</option>
-          <option value={4}>Obras</option>
-          <option value={5}>Paro</option>
-          <option value={6}>Piquete</option>
-        </select>
-      </Form.Group>
-      <Form.Group className="mb-3">
-        <Form.Label>
-          Gravedad
-          <Form.Range min={1} max={5}/>
-        </Form.Label>
-      </Form.Group>
-      <Form.Group className="mb-3">
         <Form.Label>Añade una breve descripción del incidente.</Form.Label>
-        <textarea
-          className="form-control"
-          controlId="descriptionIncident"
+        <Form.Control
+          as="textarea"
           rows={3}
-        ></textarea>
+          value={event.description}
+          onChange={(e) => setEvent({ ...event, description: e.target.value })}
+        />
       </Form.Group>
       <Form.Group className="mb-3">
         <Form.Label>Ingrese la ubicación del incidente:</Form.Label>
@@ -83,11 +105,22 @@ export function AddIncident() {
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          <GetMapCenter />
+          <GetMapCenter
+            setCenter={(newCenter) =>
+              setEvent({
+                ...event,
+                latitude: newCenter.lat,
+                longitude: newCenter.lng,
+              })
+            }
+          />
           <ZoomControl className="zoomControl" position="bottomright" />
           <LeafletgeoSearch />
         </MapContainer>
       </Form.Group>
+      <button type="submit" className="btn btn-primary" onClick={() => setShowIncidentModal(false)}>
+        Añadir Incidente
+      </button>
     </Form>
   );
 }

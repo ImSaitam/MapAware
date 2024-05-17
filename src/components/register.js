@@ -3,9 +3,9 @@ import axios from "axios";
 import { Form } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../register.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
-export default function Register({ onClose, onRegisterSuccess }) {
+export default function Register() {
   const [formData, setFormData] = useState({
     name: "",
     lastname: "",
@@ -30,14 +30,9 @@ export default function Register({ onClose, onRegisterSuccess }) {
     try {
       const response = await axios.post("http://localhost:8080/auth/register", formData);
       console.log(response);
-
+      localStorage.setItem('token', response.data.token);
+      navigate("/")
       // Call the provided onRegisterSuccess callback if available
-      if (onRegisterSuccess) {
-        onRegisterSuccess();
-      } else {
-        // Default behavior: redirect to login (implementation depends on your app)
-        console.log("Redirecting to login (implementation needed)");
-      }
     } catch (error) {
       console.error(error);
       alert("Error al registrar");
@@ -78,9 +73,9 @@ export default function Register({ onClose, onRegisterSuccess }) {
         <button type="submit" className="btn btn-primary">
             Registrarse
         </button>
-        <button type="button" className="btn btn-secondary" onClick={onClose}>
+        <Link type="button" className="btn btn-secondary" to={"/login"}>
             Volver
-        </button>
+        </Link>
       </Form>
     );
   }

@@ -1,15 +1,16 @@
 import { MapContainer, Marker, Popup, TileLayer, ZoomControl } from "react-leaflet";
 import { Icon } from "leaflet";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import "../Map.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { ModalBody, ModalFooter } from "react-bootstrap";
+import { ModalFooter } from "react-bootstrap";
 import "leaflet-geosearch/dist/geosearch.css";
 import LeafletgeoSearch from "./GeoSearch.js";
 import { AddIncident } from "./forms.js";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 // Función del Mapa
 export default function Map() {
@@ -19,17 +20,43 @@ export default function Map() {
   const [showModal, setShowModal] = useState(false);
   // Estado para controlar la visibilidad del modal de subida de incidente
   const [showIncidentModal, setShowIncidentModal] = useState(false);
+  // Estado para eventos
+  const [events, setEvents] = useState([]);
   // Estado para mostrar la vista previa de la subida de imagen
   const mapRef = useRef();
 
   const navigate = useNavigate();
 
-  useEffect(() => {
+  const fetchEvents = useCallback(async () => {
     const token = localStorage.getItem('token');
     if (!token || token === undefined) {
       navigate('/login'); // Redirect to login if no token
     }
+
+    try {
+      const response = await axios.get("http://localhost:8080/event/all", {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      console.log("API response:", response.data); // Debug log for API response
+      if (Array.isArray(response.data)) {
+        setEvents(response.data);
+      } else {
+        console.error("Expected an array of events, but got:", response.data);
+      }
+    } catch (error) {
+      console.error("Error fetching events:", error);
+      if (error.response && error.response.status === 401) {
+        // Token is invalid or expired, redirect to login
+        navigate('/login');
+      }
+    }
   }, [navigate]);
+
+  useEffect(() => {
+    fetchEvents();
+  }, [fetchEvents]);
 
   // Icono para los marcadores
   const CustomIcons = new Icon({
@@ -68,28 +95,6 @@ export default function Map() {
     );
   };
 
-  // Vector con marcadores de ejemplo
-  const markers = [
-    {
-      geocode: [-34.601085, -58.383186],
-      popUp: "Teatro Colon",
-      descripcion:
-        "El Teatro Colón de Buenos Aires es una de las salas de ópera más importantes del mundo. Su rico y prestigioso historial y las excepcionales condiciones acústicas y arquitectónicas de su edificio lo colocan al nivel de teatros como la Scala de Milán, la Ópera de París, la Ópera de Viena, el Covent Garden de Londres y el Metropolitan de Nueva York.",
-    },
-    {
-      geocode: [-34.603851, -58.381775],
-      popUp: "Obelisco",
-    },
-    {
-      geocode: [-34.607437, -58.365504],
-      popUp: "Puente de la Mujer",
-    },
-    {
-      geocode: [-34.510753457690186, -58.554239919318626],
-      popUp: "Mesquita Mönchengladbach",
-    },
-  ];
-
   return (
     <div className="map-container">
       {/* Botón para ubicación actual */}
@@ -119,7 +124,7 @@ export default function Map() {
         ></img>
       </Button>
       <Modal show={showModal} onHide={() => setShowModal(false)}>
-  {/* Contenido del modal */}
+        {/* Contenido del modal */}
       </Modal>
 
       <button className="button-add" onClick={() => setShowIncidentModal(true)}>
@@ -138,13 +143,11 @@ export default function Map() {
           <Modal.Title>Añadir un incidente</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <AddIncident />
+          <AddIncident onEventAdded={fetchEvents} setShowIncidentModal={setShowIncidentModal}/>
         </Modal.Body>
-        <ModalFooter>
-          <Button variant="primary">Subir incidente</Button>
-        </ModalFooter>
+
       </Modal>
-    
+
       {/* Mapa */}
       <MapContainer
         center={[-34.603851, -58.381775]}
@@ -156,12 +159,13 @@ export default function Map() {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        {/* Marcadores */}
-        {markers.map((marker, index) => (
-          <Marker key={index} position={marker.geocode} icon={CustomIcons}>
+        {/* Marcadores de eventos */}
+        {Array.isArray(events) && events.map((event, index) => (
+          <Marker key={index} position={[event.latitude, event.longitude]} icon={CustomIcons}>
             <Popup>
-              <h3>{marker.popUp}</h3>
-              <p>{marker.descripcion}</p>
+              <h3>{event.category}</h3>
+              <p>{event.description}</p>
+              <p>Gravedad: {event.degree}</p>
             </Popup>
           </Marker>
         ))}
