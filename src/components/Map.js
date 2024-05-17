@@ -26,7 +26,7 @@ export default function Map() {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    if (!token) {
+    if (!token || token === undefined) {
       navigate('/login'); // Redirect to login if no token
     }
   }, [navigate]);

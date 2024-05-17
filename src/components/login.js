@@ -4,7 +4,7 @@ import { Form } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import RegisterForm from "./register.js"; // Import RegisterForm component
 import "../login.css";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export function LoginForm() {
   const [formData, setFormData] = useState({
