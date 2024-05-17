@@ -1,10 +1,103 @@
 .centerForm {
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
-}
-
-.loginForm Button {
-    margin: 0 1em 0 1em;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .centerForm::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 200%;
+    height: 100%;
+    background: url('../src/images/fondo.png') repeat-x;
+    background-size: contain;
+    z-index: 0;
+    animation: slide 30s linear infinite;
+  }
+  
+  .centerForm::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* Oscurecer la imagen */
+    z-index: 1;
+  }
+  
+  .loginForm {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 2;
+  }
+  
+  .loginForm .form-group {
+    margin-bottom: 1rem;
+  }
+  
+  .loginForm .form-label {
+    font-weight: bold;
+    color: #343a40;
+  }
+  
+  .loginForm .form-control {
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+  }
+  
+  .loginForm .btn-primary {
+    width: 100%;
+    background-color: #007bff;
+    border-color: #007bff;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .loginForm .btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+  }
+  
+  .loginForm .btn-secondary {
+    width: 100%;
+    background-color: #6c757d;
+    border-color: #6c757d;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .loginForm .btn-secondary:hover {
+    background-color: #5a6268;
+    border-color: #545b62;
+  }
+  
+  .error-message {
+    color: #dc3545;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 10px;
+  }
+  
+  @keyframes slide {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  @media (max-width: 768px) {
+  .centerForm::before {
+    background-size: cover; /* Asegura que la imagen cubra todo el fondo sin espacios blancos */
+    background-repeat: no-repeat;
+    animation: none;
+    background: url(../src/images/fondo-mobile.png);
+  }
 }
