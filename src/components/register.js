@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { Form } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../register.css";
+import { useNavigate } from "react-router-dom";
 
-
-export default function RegisterForm({ onClose, onRegisterSuccess }) {
+export default function Register({ onClose, onRegisterSuccess }) {
   const [formData, setFormData] = useState({
     name: "",
     lastname: "",
@@ -14,6 +14,15 @@ export default function RegisterForm({ onClose, onRegisterSuccess }) {
     email: "",
     password: "",
   });
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      navigate('/'); // Redirect to login if no token
+    }
+  }, [navigate]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();

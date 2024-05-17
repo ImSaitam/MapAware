@@ -1,6 +1,6 @@
 import { MapContainer, Marker, Popup, TileLayer, ZoomControl } from "react-leaflet";
 import { Icon } from "leaflet";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import "../Map.css";
@@ -9,9 +9,10 @@ import { ModalBody, ModalFooter } from "react-bootstrap";
 import "leaflet-geosearch/dist/geosearch.css";
 import LeafletgeoSearch from "./GeoSearch.js";
 import { AddIncident } from "./forms.js";
+import { useNavigate } from "react-router-dom";
 
 // Función del Mapa
-function Map() {
+export default function Map() {
   // Estado para la ubicación actual
   const [position, setPosition] = useState(null);
   // Estado para controlar la visibilidad del modal
@@ -20,6 +21,15 @@ function Map() {
   const [showIncidentModal, setShowIncidentModal] = useState(false);
   // Estado para mostrar la vista previa de la subida de imagen
   const mapRef = useRef();
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      navigate('/login'); // Redirect to login if no token
+    }
+  }, [navigate]);
 
   // Icono para los marcadores
   const CustomIcons = new Icon({
@@ -108,6 +118,9 @@ function Map() {
           alt=""
         ></img>
       </Button>
+      <Modal show={showModal} onHide={() => setShowModal(false)}>
+  {/* Contenido del modal */}
+      </Modal>
 
       <button className="button-add" onClick={() => setShowIncidentModal(true)}>
         <img
@@ -160,5 +173,3 @@ function Map() {
     </div>
   );
 }
-
-export default Map;

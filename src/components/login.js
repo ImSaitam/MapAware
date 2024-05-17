@@ -4,6 +4,7 @@ import { Form } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import RegisterForm from "./register.js"; // Import RegisterForm component
 import "../login.css";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 
 export function LoginForm() {
   const [formData, setFormData] = useState({
@@ -13,6 +14,7 @@ export function LoginForm() {
 
   const [errorMessage, setErrorMessage] = useState("");
   const [isRegisterFormOpen, setIsRegisterFormOpen] = useState(false);
+  const navigate = useNavigate();
 
   const handleRegisterSuccess = () => {
     setIsRegisterFormOpen(false);
@@ -30,7 +32,7 @@ const handleSubmit = async (event) => {
     console.log(response.data);
     alert("Login successful!");
     localStorage.setItem('token', response.data.token);
-    getData();
+    navigate("/")
   } catch (error) {
     console.error(error.response.data);
     if (error.response.data.code === 401 || error.response.data.message.includes("password")) {
@@ -41,22 +43,19 @@ const handleSubmit = async (event) => {
   }
 };
 
+useEffect(() => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    navigate('/'); // Redirect to login if no token
+  }
+}, [navigate]);
+
   const handleOpenRegisterForm = () => {
     setIsRegisterFormOpen(true);
   };
 
   const getToken = () => {
     return localStorage.getItem('token');
-  }
-
-  const getData = async () => {
-    const token = getToken();
-    const response = await axios.get("http://localhost:8080/api/data", {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
-    console.log(response.data);
   }
 
   return (
@@ -89,9 +88,9 @@ const handleSubmit = async (event) => {
           <button type="submit" className="btn btn-primary">
             Iniciar sesión
           </button>
-          <button type="submit" className="btn btn-secondary" onClick={handleOpenRegisterForm}>
+          <Link type="submit" className="btn btn-secondary" to={"/register"}>
             Registrarse
-          </button>
+          </Link>
           {errorMessage && <p className="error-message">{errorMessage}</p>}
         </Form>
       )}

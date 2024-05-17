@@ -1,9 +1,17 @@
 import './App.css';
+import Map from './components/Map.js'
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { LoginForm } from './components/login.js';
-import { Map } from './components/Map.js'
+import Register from './components/register.js';
 
 export default function App() {
     return (
-    <LoginForm />
+        <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Map />} />
+              <Route path="/login" element={<LoginForm />} />
+              <Route path="/register" element={<Register />} />
+            </Routes>
+        </BrowserRouter>
   );
 }

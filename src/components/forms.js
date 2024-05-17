@@ -57,6 +57,12 @@ export function AddIncident() {
         </select>
       </Form.Group>
       <Form.Group className="mb-3">
+        <Form.Label>
+          Gravedad
+          <Form.Range min={1} max={5}/>
+        </Form.Label>
+      </Form.Group>
+      <Form.Group className="mb-3">
         <Form.Label>Añade una breve descripción del incidente.</Form.Label>
         <textarea
           className="form-control"
