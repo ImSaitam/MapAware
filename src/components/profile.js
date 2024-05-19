@@ -12,7 +12,7 @@ function deleteEvent(eventId, navigate, setUser, event) {
     return;
   }
 
-  axios.delete(`http://localhost:8080/event/${eventId}`, {
+  axios.delete(`http://localhost:8080/event/delete/${eventId}`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
