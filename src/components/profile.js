@@ -36,6 +36,7 @@ export default function Profile() {
   const navigate = useNavigate();
   const [user, setUser] = useState({}); // Estado para guardar los datos del usuario
 
+
   useEffect(() => {
     const token = localStorage.getItem('token');
 
@@ -49,13 +50,13 @@ export default function Profile() {
         Authorization: `Bearer ${token}`
       }
     })
-  .then(response => {
-      const userData = response.data;
-      setUser(userData); // Actualiza el estado con los datos del usuario
-    })
-  .catch(error => {
-      // Maneja el error
-    });
+   .then(response => {
+        const userData = response.data;
+        setUser(userData); // Actualiza el estado con los datos del usuario
+      })
+   .catch(error => {
+        // Maneja el error
+      });
   }, [navigate]);
 
   return (
@@ -68,14 +69,18 @@ export default function Profile() {
       <p>Email: {user.email}</p>
       <p>Eventos:</p>
       <ul>
-      {user.events && user.events.map((event, index) => (
-        <li key={index}>
-          <p>Fecha y hora: {event.dateTime}</p>
-          <p>Descripción: {event.description}</p>
-          <p>Categoría: {event.category}</p>
-          <Button variant="outline-warning" className='deleteButton' onClick={() => deleteEvent(event.id, navigate, setUser)}>Borrar evento</Button>
-        </li>
-      ))}
+      {user.events && user.events.map((event, index) => {
+        const eventDateTime = new Date(event.dateTime);
+        const formattedDateTime = eventDateTime.toLocaleString('es-ES', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+        return (
+          <li key={index}>
+            <p>Fecha y hora: {formattedDateTime}</p>
+            <p>Descripción: {event.description}</p>
+            <p>Categoría: {event.category}</p>
+            <Button variant="outline-warning" className='deleteButton' onClick={() => deleteEvent(event.id, navigate, setUser, event)}>Borrar evento</Button>
+          </li>
+        )
+      })}
     </ul>
     </div>
   )
