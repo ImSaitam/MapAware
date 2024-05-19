@@ -2,22 +2,18 @@ import { MapContainer, Marker, Popup, TileLayer, ZoomControl } from "react-leafl
 import { Icon } from "leaflet";
 import { useState, useRef, useEffect, useCallback } from "react";
 import Modal from "react-bootstrap/Modal";
-import Button from "react-bootstrap/Button";
 import "../Map.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { ModalFooter } from "react-bootstrap";
 import "leaflet-geosearch/dist/geosearch.css";
 import LeafletgeoSearch from "./GeoSearch.js";
 import { AddIncident } from "./forms.js";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 
 // Función del Mapa
 export default function Map() {
   // Estado para la ubicación actual
   const [position, setPosition] = useState(null);
-  // Estado para controlar la visibilidad del modal
-  const [showModal, setShowModal] = useState(false);
   // Estado para controlar la visibilidad del modal de subida de incidente
   const [showIncidentModal, setShowIncidentModal] = useState(false);
   // Estado para eventos
@@ -106,7 +102,7 @@ export default function Map() {
         ></img>
       </button>
       {/* Botón para abrir el modal */}
-      <Button
+      <Link
         style={{
           position: "absolute",
           top: "10px",
@@ -115,17 +111,14 @@ export default function Map() {
           right: "5px",
           zIndex: 1000,
         }}
-        onClick={() => setShowModal(true)}
+        to={"/profile"}
       >
         <img
           src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png"
           className="user-icon"
           alt=""
         ></img>
-      </Button>
-      <Modal show={showModal} onHide={() => setShowModal(false)}>
-        {/* Contenido del modal */}
-      </Modal>
+      </Link>
 
       <button className="button-add" onClick={() => setShowIncidentModal(true)}>
         <img

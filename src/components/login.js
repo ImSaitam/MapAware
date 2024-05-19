@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Form } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import RegisterForm from "./register.js"; // Import RegisterForm component
 import "../login.css";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -13,13 +12,7 @@ export function LoginForm() {
   });
 
   const [errorMessage, setErrorMessage] = useState("");
-  const [isRegisterFormOpen, setIsRegisterFormOpen] = useState(false);
   const navigate = useNavigate();
-
-  const handleRegisterSuccess = () => {
-    setIsRegisterFormOpen(false);
-    alert("Registro exitoso! Inicie sesión ahora.");
-  };
 
 const handleSubmit = async (event) => {
   event.preventDefault();
@@ -49,14 +42,6 @@ useEffect(() => {
     navigate('/'); // Redirect to login if no token
   }
 }, [navigate]);
-
-  const handleOpenRegisterForm = () => {
-    setIsRegisterFormOpen(true);
-  };
-
-  const getToken = () => {
-    return localStorage.getItem('token');
-  }
 
   return (
     <div className="centerForm">
