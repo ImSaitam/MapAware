@@ -4,6 +4,11 @@ import "../profile.css";
 import axios from 'axios';
 import { Button } from 'react-bootstrap';
 
+function deleteToken() { 
+  localStorage.removeItem('token')
+  alert("Sesion cerrada con exito.")
+}
+
 function deleteEvent(eventId, navigate, setUser, event) {
   const token = localStorage.getItem('token');
 
@@ -12,7 +17,7 @@ function deleteEvent(eventId, navigate, setUser, event) {
     return;
   }
 
-  axios.delete(`http://localhost:8080/event/${eventId}`, {
+  axios.delete(`http://localhost:8080/event/delete/${eventId}`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -82,6 +87,7 @@ export default function Profile() {
         )
       })}
     </ul>
+      <Link variant='warning' to={"/"} onClick={deleteToken}>Cerrar sesión</Link>
     </div>
   )
 }
