@@ -74,6 +74,11 @@
     transform: translateY(-50%);
     z-index: 1;
   }
+  .profile-container .trashButton {
+    position: absolute;
+    right: calc(10% + 20px); /* Ajusta la posición hacia la izquierda */
+    display: none;
+  }
   
   .profile-container .toggleButton {
     background: none;
@@ -99,4 +104,14 @@
   .profile-container .event-details.expanded {
     display: block;
   }
-  
+  @media (max-width: 768px) {
+    .profile-container .event-description{
+      display: none;
+    }
+    .profile-container .deleteButton{
+      display: none;
+    }
+    .profile-container .trashButton{
+      display:block;
+    }
+}

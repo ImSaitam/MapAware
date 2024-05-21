@@ -83,20 +83,22 @@ export default function Profile() {
         <ul>
           {user.events && user.events.map((event, index) => {
             const eventDateTime = new Date(event.dateTime);
-            const formattedDateTime = eventDateTime.toLocaleString('es-ES', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+            const formattedDateTime = eventDateTime.toLocaleString('es-ES', { year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' });
             const isExpanded = expandedEventId === event.id;
             return (
               <li key={index}>
                 <div className="event-header">
                   <span>{event.category}</span>
                   <span className="event-description">{event.description.length > 30 ? `${event.description.slice(0, 20)}...` : event.description}</span>
+                  <Button variant="outline-none" className='trashButton' onClick={() => deleteEvent(event.id, navigate, setUser, event)}>🗑️</Button>
                   <Button variant="outline-warning" className='deleteButton' onClick={() => deleteEvent(event.id, navigate, setUser, event)}>Borrar evento</Button>
+                  
                   <button className='toggleButton' onClick={() => toggleEventDetails(event.id)}>
                     {isExpanded ? '▲' : '▼'}
                   </button>
                 </div>
                 <div className={`event-details ${isExpanded ? 'expanded' : ''}`}>
-                  <p>Fecha y hora: {formattedDateTime}</p>
+                  <p><strong>Fecha y hora:</strong> {formattedDateTime}</p>
                   <p><strong>Categoría:</strong> {event.category}</p>
                   <p><strong>Descripción:</strong> {event.description}</p>
                 </div>
