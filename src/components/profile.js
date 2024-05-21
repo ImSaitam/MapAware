@@ -106,7 +106,7 @@ export default function Profile() {
             )
           })}
         </ul>
-        <Link variant='warning' to={"/"} onClick={deleteToken}>Cerrar sesión</Link>
+        <button className="btn btn-outline-danger logout-button" onClick={() => { deleteToken(); window.location.href = "/"; }}>Cerrar sesión</button>
       </div>
     </div>
   )
