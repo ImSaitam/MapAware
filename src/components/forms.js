@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Form } from "react-bootstrap";
 import LeafletgeoSearch from "./GeoSearch.js";
 import { MapContainer, TileLayer, ZoomControl, useMap, Marker } from "react-leaflet";
@@ -27,6 +27,7 @@ function GetMapCenter({ setCenter }) {
 
 export function AddIncident({ onEventAdded, setShowIncidentModal }) {
   const mapRef = useRef();
+  const [center, setCenter] = useState([0, 0]);
 
   const [event, setEvent] = useState({
     category: "",
@@ -41,18 +42,31 @@ export function AddIncident({ onEventAdded, setShowIncidentModal }) {
     console.log("Submitting event:", event); // Debug log
 
     try {
-      const response = await axios.post("http://localhost:8080/event", event, 
-      {headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
-      }}
-      );
+      const response = await axios.post("http://localhost:8080/event", event, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      });
       console.log("Incident added:", response.data);
       onEventAdded(); // Llama la función callback después de añadir un evento
     } catch (error) {
       console.error("There was an error adding the incident!", error);
     }
   };
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        setCenter([latitude, longitude]);
+        mapRef.current.setView([latitude, longitude], 15); // Zoom al lugar de la ubicación actual
+      },
+      (error) => {
+        console.error("Error al obtener la ubicación:", error);
+      }
+    );
+  }, []);
 
   return (
     <Form onSubmit={handleSubmit}>
@@ -63,9 +77,7 @@ export function AddIncident({ onEventAdded, setShowIncidentModal }) {
           value={event.category}
           onChange={(e) => setEvent({ ...event, category: e.target.value })}
         >
-          <option disabled value="">
-            Tipo de incidente...
-          </option>
+          <option disabled value="">Tipo de incidente...</option>
           <option value="Accidente">Accidente</option>
           <option value="Asalto">Asalto</option>
           <option value="Manifestación">Manifestación</option>
@@ -96,7 +108,7 @@ export function AddIncident({ onEventAdded, setShowIncidentModal }) {
         <Form.Label>Ingrese la ubicación del incidente:</Form.Label>
         <MapContainer
           id="mapIncident"
-          center={[-34.603851, -58.381775]}
+          center={center}
           zoom={16}
           ref={mapRef}
           zoomControl={false}
