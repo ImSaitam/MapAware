@@ -82,7 +82,6 @@ export function AddIncident({ onEventAdded, setShowIncidentModal }) {
           <option value="Asalto">Asalto</option>
           <option value="Manifestación">Manifestación</option>
           <option value="Obras">Obras</option>
-          <option value="Paro">Paro</option>
           <option value="Piquete">Piquete</option>
         </Form.Control>
       </Form.Group>

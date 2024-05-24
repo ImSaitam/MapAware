@@ -156,6 +156,7 @@ export default function Map() {
         {Array.isArray(events) && events.map((event, index) => (
           <Marker key={index} position={[event.latitude, event.longitude]} icon={CustomIcons}>
             <Popup>
+              <p>Añadido por {event.user.username}</p>
               <h3>{event.category}</h3>
               <p>{event.description}</p>
               <p>Gravedad: {event.degree}</p>
