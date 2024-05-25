@@ -4,11 +4,6 @@ import "../adminPanel.css";
 import axios from 'axios';
 import { Button } from 'react-bootstrap';
 
-function deleteToken() {
-  localStorage.removeItem('token');
-  alert("Sesion cerrada con exito.");
-}
-
 function deleteEvent(eventId, navigate, setUser, event) {
   const token = localStorage.getItem('token');
 
@@ -41,30 +36,35 @@ export default function AdminPanel() {
   const [user, setUser] = useState({}); // Estado para guardar los datos del usuario
   const [expandedEventId, setExpandedEventId] = useState(null);
 
+  const toggleEventDetails = (eventId) => {
+    setExpandedEventId(expandedEventId === eventId ? null : eventId);
+  };
+
   useEffect(() => {
     const token = localStorage.getItem('token');
-
+  
     if (!token) {
       navigate('/');
       return;
     }
-
-    axios.get('http://localhost:8080/user', {
+  
+    axios.get('http://localhost:8080/event/all-pag?pag=0&cant=5', {
       headers: {
         Authorization: `Bearer ${token}`
       }
     })
-      .then(response => {
+     .then(response => {
         const userData = response.data;
-        setUser(userData);
+        setUser(prevUser => {
+          return {
+           ...prevUser,
+            events: userData
+          }
+        });
       })
-      .catch(error => {
+     .catch(error => {
       });
   }, [navigate]);
-
-  const toggleEventDetails = (eventId) => {
-    setExpandedEventId(expandedEventId === eventId ? null : eventId);
-  };
 
   return (
     <div className="profile-container">
@@ -76,8 +76,6 @@ export default function AdminPanel() {
           </svg>
         </Link>
         <h1>Panel administrador</h1>
-        <p>Nombre de usuario:{user.username}</p>
-        <p>Email: {user.email}</p>
         <p>Eventos:</p>
         <ul>
           {user.events && user.events.map((event, index) => {
@@ -96,7 +94,8 @@ export default function AdminPanel() {
                   </button>
                 </div>
                 <div className={`event-details ${isExpanded ? 'expanded' : ''}`}>
-                  <p><strong>Nombre de usuario:</strong> {user.username}</p>
+                  <p><strong>ID:</strong> {event.id}</p>
+                  <p><strong>Nombre de usuario:</strong> {event.username}</p>
                   <p><strong>Fecha y hora:</strong> {formattedDateTime}</p>
                   <p><strong>Categoría:</strong> {event.category}</p>
                   <p><strong>Descripción:</strong> {event.description}</p>
@@ -105,7 +104,6 @@ export default function AdminPanel() {
             )
           })}
         </ul>
-        <button className="btn btn-outline-danger logout-button" onClick={() => { deleteToken(); window.location.href = "/"; }}>Cerrar sesión</button>
       </div>
     </div>
   )
