@@ -109,6 +109,18 @@
   .profile-container .event-details.expanded {
     display: block;
   }
+
+  .pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+  }
+  
+  .pagination button {
+    margin: 0 0.5rem;
+  }
+
   @media (max-width: 768px) {
     .profile-container .event-description{
       display: none;

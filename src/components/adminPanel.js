@@ -35,6 +35,7 @@ export default function AdminPanel() {
   const navigate = useNavigate();
   const [user, setUser] = useState({}); // Estado para guardar los datos del usuario
   const [expandedEventId, setExpandedEventId] = useState(null);
+  const [page, setPage] = useState(0);
 
   const toggleEventDetails = (eventId) => {
     setExpandedEventId(expandedEventId === eventId ? null : eventId);
@@ -48,7 +49,7 @@ export default function AdminPanel() {
       return;
     }
   
-    axios.get('http://localhost:8080/event/all-pag?pag=0&cant=5', {
+    axios.get(`http://localhost:8080/event/all-pag?pag=${page}&cant=5`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -64,7 +65,15 @@ export default function AdminPanel() {
       })
      .catch(error => {
       });
-  }, [navigate]);
+  }, [page, navigate]);
+
+  const handlePrevPage = () => {
+    setPage(page - 1);
+  };
+
+  const handleNextPage = () => {
+    setPage(page + 1);
+  };
 
   return (
     <div className="profile-container">
@@ -104,6 +113,15 @@ export default function AdminPanel() {
             )
           })}
         </ul>
+        <div className="pagination d-flex justify-content-between">
+          <Button variant="outline-primary" onClick={handlePrevPage} disabled={page === 0}>
+            &#x2190; Anterior
+          </Button>
+          <span>Página {page + 1}</span>
+          <Button variant="outline-primary" onClick={handleNextPage}>
+            Siguiente &#x2192;
+          </Button>
+          </div>
       </div>
     </div>
   )
