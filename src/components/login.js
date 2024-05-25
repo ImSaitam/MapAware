@@ -55,6 +55,7 @@ useEffect(() => {
               onChange={(event) =>
                 setFormData({ ...formData, username: event.target.value })
               }
+              required
             />
           </Form.Group>
           <Form.Group className="mb-3">
@@ -65,6 +66,7 @@ useEffect(() => {
               onChange={(event) =>
                 setFormData({ ...formData, password: event.target.value })
               }
+              required
             />
          </Form.Group>
           <button type="submit" className="btn btn-primary">

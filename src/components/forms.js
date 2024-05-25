@@ -31,7 +31,7 @@ export function AddIncident({ onEventAdded, setShowIncidentModal }) {
 
   const [event, setEvent] = useState({
     category: "",
-    degree: "",
+    degree: 3,
     description: "",
     latitude: null,
     longitude: null,
@@ -76,6 +76,7 @@ export function AddIncident({ onEventAdded, setShowIncidentModal }) {
           as="select"
           value={event.category}
           onChange={(e) => setEvent({ ...event, category: e.target.value })}
+          required
         >
           <option disabled value="">Tipo de incidente...</option>
           <option value="Accidente">Accidente</option>

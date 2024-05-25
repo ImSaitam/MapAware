@@ -9,6 +9,11 @@ import LeafletgeoSearch from "./GeoSearch.js";
 import { AddIncident } from "./forms.js";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
+import markerAccidente from "../images/marker-accidente.svg";
+import markerObras from "../images/marker-obra.svg";
+import markerManifestacion from "../images/marker-manifestacion.svg";
+import markerAsalto from "../images/marker-asalto.svg";
+import markerPiquete from "../images/marker-piquete.svg";
 
 // Función del Mapa
 export default function Map() {
@@ -55,10 +60,28 @@ export default function Map() {
   }, [fetchEvents]);
 
   // Icono para los marcadores
-  const CustomIcons = new Icon({
-    iconUrl: "https://cdn-icons-png.flaticon.com/512/447/447031.png",
-    iconSize: [19, 19],
-  });
+  const incidentIcons = {
+    Accidente: {
+      iconUrl: markerAccidente,
+      iconSize: [36, 36]
+    },
+    Obras: {
+      iconUrl: markerObras,
+      iconSize: [36, 36]
+  },
+    Manifestación: {
+      iconUrl: markerManifestacion,
+      iconSize: [36, 36]
+    },
+    Asalto: {
+      iconUrl: markerAsalto,
+      iconSize: [36, 36]
+    },
+    Piquete: {
+      iconUrl: markerPiquete,
+      iconSize: [36, 36 ]
+    }
+};
 
   // Icono para la ubicación actual
   const CurrentLocationIcon = new Icon({
@@ -154,15 +177,15 @@ export default function Map() {
         />
         {/* Marcadores de eventos */}
         {Array.isArray(events) && events.map((event, index) => (
-          <Marker key={index} position={[event.latitude, event.longitude]} icon={CustomIcons}>
-            <Popup>
-              <p>Añadido por {event.user.username}</p>
-              <h3>{event.category}</h3>
-              <p>{event.description}</p>
-              <p>Gravedad: {event.degree}</p>
-            </Popup>
-          </Marker>
-        ))}
+  <Marker key={index} position={[event.latitude, event.longitude]} icon={new Icon(incidentIcons[event.category])}>
+    <Popup>
+      <p>Añadido por <Link to={`/user/${event.user.username}`}>{event.user.username}</Link></p>
+      <h3>{event.category}</h3>
+      <p>{event.description}</p>
+      <p>Gravedad: {event.degree}</p>
+    </Popup>
+  </Marker>
+))}
         {/* Marcador para la ubicación actual */}
         <LocateMarker position={position} />
         <ZoomControl className="zoomControl" position="topleft" />
