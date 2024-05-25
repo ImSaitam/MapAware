@@ -1,0 +1,77 @@
+.profile-movil-container {
+    padding: 10px;
+  }
+  
+  .container {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 10px;
+    box-sizing: border-box;
+  }
+  
+  h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .event-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .event-item {
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  
+  .event-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: left;
+    padding: 10px;
+    background-color: #f9f9f9;
+  }
+  
+
+  
+  .trashButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    
+
+  }
+  .toggleButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    float: right;
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .event-details {
+    display: none;
+    padding: 10px;
+    background-color: #fff;
+  }
+  
+  .event-details.expanded {
+    display: block;
+  }
+  
+  .logout-button {
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .profile-image{
+    width: 35%;
+    display: block;
+    margin: auto;
+  }
+  

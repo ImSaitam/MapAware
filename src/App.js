@@ -5,8 +5,11 @@ import { LoginForm } from './components/login.js';
 import Register from './components/register.js';
 import Profile from './components/profile.js';
 import AdminPanel from './components/adminPanel.js';
+import ProfileMovil from './components/profileMovil.js';
+
 
 export default function App() {
+  
     return (
         <BrowserRouter>
             <Routes>
@@ -14,7 +17,8 @@ export default function App() {
               <Route path="/login" element={<LoginForm />} />
               <Route path="/register" element={<Register />} />
               <Route path="/profile" element={<Profile />} />
-              <Route path="/" element={<AdminPanel />} />
+              <Route path="/admin" element={<AdminPanel />} />
+              <Route path="/ProfileMovil" element={<ProfileMovil />} />
             </Routes>
         </BrowserRouter>
   );
