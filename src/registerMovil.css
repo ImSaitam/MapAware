@@ -1,0 +1,52 @@
+.register-movil-container {
+  padding: 10px;
+  position: relative;
+  min-height: 100vh;
+}
+
+.form-container {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.form-heading {
+  text-align: center;
+  margin-bottom: 20px;
+  margin-top: 1%; /* Agregado para ajustar el margen superior */
+}
+
+.form-group {
+  margin-bottom: 10px;
+}
+
+.form-control-input {
+  width: 100%;
+}
+
+.btn-register {
+  position: absolute;
+  bottom: 1%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 95%;
+}
+
+.profile-image {
+  width: 35%;
+  display: block;
+  margin: auto;
+}
+
+.logo-img {
+  width: 35%;
+  display: block;
+  margin: auto;
+}
+
+@media (max-width: 375px) { /* Media query para iPhone SE */
+  .logo-img {
+    display: none;
+  }
+}

@@ -6,6 +6,7 @@ import Register from './components/register.js';
 import Profile from './components/profile.js';
 import AdminPanel from './components/adminPanel.js';
 import ProfileMovil from './components/profileMovil.js';
+import RegisterMovil from './components/registerMovil.js';
 
 
 export default function App() {
@@ -19,6 +20,7 @@ export default function App() {
               <Route path="/profile" element={<Profile />} />
               <Route path="/admin" element={<AdminPanel />} />
               <Route path="/ProfileMovil" element={<ProfileMovil />} />
+              <Route path="/RegisterMovil" element={<RegisterMovil />} />
             </Routes>
         </BrowserRouter>
   );

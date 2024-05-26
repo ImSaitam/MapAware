@@ -38,6 +38,15 @@ export default function Register() {
       alert("Error al registrar");
     }
   };
+  function redirectToMobileVersion() {
+    const userAgent = navigator.userAgent.toLowerCase();
+    const isMobile = /iphone|ipad|ipod|android|blackberry|opera mini|windows mobile|palm|iemobile|symbian/i.test(userAgent);
+    const mobileURL = "/registermovil";
+    if (isMobile) {
+      window.location.href = mobileURL;
+    }
+  }
+  window.onload = redirectToMobileVersion;
   
     return (
       <Form onSubmit={handleSubmit} className="registerForm">

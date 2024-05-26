@@ -66,6 +66,16 @@ export default function Profile() {
   const toggleEventDetails = (eventId) => {
     setExpandedEventId(expandedEventId === eventId ? null : eventId);
   };
+  function redirectToMobileVersion() {
+    const userAgent = navigator.userAgent.toLowerCase();
+    const isMobile = /iphone|ipad|ipod|android|blackberry|opera mini|windows mobile|palm|iemobile|symbian/i.test(userAgent);
+    const mobileURL = "/profilemovil";
+    if (isMobile) {
+      window.location.href = mobileURL;
+    }
+  }
+  window.onload = redirectToMobileVersion;
+  
 
   return (
     <div className="profile-container">

@@ -1,5 +1,7 @@
 .profile-movil-container {
     padding: 10px;
+    position: relative;
+    min-height: 100vh;
   }
   
   .container {
@@ -65,8 +67,11 @@
   }
   
   .logout-button {
-    width: 100%;
-    margin-top: 20px;
+    position: absolute;
+    bottom: 1%; 
+    left: 50%;
+    transform: translateX(-50%);
+    width: 95%; 
   }
 
   .profile-image{
