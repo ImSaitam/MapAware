@@ -45,8 +45,3 @@
   margin: auto;
 }
 
-@media (max-width: 375px) { /* Media query para iPhone SE */
-  .logo-img {
-    display: none;
-  }
-}

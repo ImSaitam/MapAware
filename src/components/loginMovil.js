@@ -2,10 +2,11 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Form } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "../login.css";
+import "../loginMovil.css";
 import { Link, useNavigate } from "react-router-dom";
+import logoImage from "../images/mapaware-logo.png";
 
-export function LoginForm() {
+export function LoginFormMovil() {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -43,20 +44,11 @@ useEffect(() => {
   }
 }, [navigate]);
 
-function redirectToMobileVersion() {
-  const userAgent = navigator.userAgent.toLowerCase();
-  const isMobile = /iphone|ipad|ipod|android|blackberry|opera mini|windows mobile|palm|iemobile|symbian/i.test(userAgent);
-  const mobileURL = "/loginMovil";
-  if (isMobile) {
-    window.location.href = mobileURL;
-  }
-}
-window.onload = redirectToMobileVersion;
-
-
   return (
-    <div className="centerForm">
-        <Form onSubmit={handleSubmit} className="loginForm">
+    <div className="centerForm-movil">
+    <img src={logoImage} alt="Logo" className="logo-login-img" />
+      <h2 className="form-heading-login">Inicio de sesión</h2>
+        <Form onSubmit={handleSubmit} className="loginForm-movil">
           <Form.Group className="mb-3">
             <Form.Label>Nombre de Usuario</Form.Label>
             <Form.Control
@@ -80,10 +72,10 @@ window.onload = redirectToMobileVersion;
               required
             />
          </Form.Group>
-          <button type="submit" className="btn btn-primary">
+          <button type="submit" className="btn new-btn-primary">
             Iniciar sesión
           </button>
-          <Link type="submit" className="btn btn-secondary" to={"/register"}>
+          <Link type="submit" className="btn new-btn-secondary" to={"/registerMovil"}>
             Registrarse
           </Link>
           {errorMessage && <p className="error-message">{errorMessage}</p>}

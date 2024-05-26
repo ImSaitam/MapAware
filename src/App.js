@@ -7,6 +7,7 @@ import Profile from './components/profile.js';
 import AdminPanel from './components/adminPanel.js';
 import ProfileMovil from './components/profileMovil.js';
 import RegisterMovil from './components/registerMovil.js';
+import { LoginFormMovil } from './components/loginMovil.js';
 
 
 export default function App() {
@@ -21,6 +22,8 @@ export default function App() {
               <Route path="/admin" element={<AdminPanel />} />
               <Route path="/ProfileMovil" element={<ProfileMovil />} />
               <Route path="/RegisterMovil" element={<RegisterMovil />} />
+              <Route path="/loginMovil" element={<LoginFormMovil />} />
+              
             </Routes>
         </BrowserRouter>
   );
