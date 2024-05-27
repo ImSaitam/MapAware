@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import "../profileMovil.css";  // Importar el CSS específico para móviles
+import { Pagination } from 'react-bootstrap'; // Importar el componente de paginación de Bootstrap
 
 function deleteToken() {
   localStorage.removeItem('token');
-  alert("Sesion cerrada con exito.");
+  alert("Sesión cerrada con éxito.");
 }
 
 function deleteEvent(eventId, navigate, setUser, event) {
@@ -32,13 +33,15 @@ function deleteEvent(eventId, navigate, setUser, event) {
     .catch(error => {
       // Maneja el error
     });
-  console.log("Evento borrado con exito.");
+  console.log("Evento borrado con éxito.");
 }
 
 export default function ProfileMovil() {
   const navigate = useNavigate();
-  const [user, setUser] = useState({}); // Estado para guardar los datos del usuario
+  const [user, setUser] = useState({});
   const [expandedEventId, setExpandedEventId] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(5); // Número de elementos por página inicial
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -55,16 +58,34 @@ export default function ProfileMovil() {
     })
       .then(response => {
         const userData = response.data;
-        setUser(userData); // Actualiza el estado con los datos del usuario
+        setUser(userData);
       })
       .catch(error => {
         // Maneja el error
       });
   }, [navigate]);
 
+  useEffect(() => {
+    const screenHeight = window.screen.height;
+    if (screenHeight > 890 ) {
+      setItemsPerPage(8);
+    } else {
+      setItemsPerPage(4); 
+    }
+  }, []);
   const toggleEventDetails = (eventId) => {
     setExpandedEventId(expandedEventId === eventId ? null : eventId);
   };
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const paginatedEvents = user.events?.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+  const showPagination = user.events && user.events.length > itemsPerPage;
 
   return (
     <div className="profile-movil-container">
@@ -83,33 +104,52 @@ export default function ProfileMovil() {
         <p>Nombre de usuario: {user.username}</p>
         <p>Email: {user.email}</p>
         <p>Eventos:</p>
-        <ul className="event-list">
-          {user.events && user.events.map((event, index) => {
-            const eventDateTime = new Date(event.dateTime);
-            const formattedDateTime = eventDateTime.toLocaleString('es-ES', { year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' });
-            const isExpanded = expandedEventId === event.id;
-            return (
-              <li key={index} className="event-item">
-                <div className="event-header">
-                  <span>{event.category}</span>
-                  <div className="event-buttons">
-                  <button className="trashButton" onClick={() => deleteEvent(event.id, navigate, setUser, event)}>🗑️</button>
-                  <button className="toggleButton" onClick={() => toggleEventDetails(event.id)}>
-                    {isExpanded ? '▲' : '▼'}
-                  </button>
-                  </div>
-                </div>
-                <div className={`event-details ${isExpanded ? 'expanded' : ''}`}>
-                  <p><strong>Fecha y hora:</strong> {formattedDateTime}</p>
-                  <p><strong>Categoría:</strong> {event.category}</p>
-                  <p><strong>Descripción:</strong> {event.description}</p>
-                </div>
-              </li>
-            )
-          })}
-        </ul>
+        {user.events && user.events.length > 0 ? (
+          <>
+            <ul className="event-list">
+              {paginatedEvents.map((event, index) => {
+                const eventDateTime = new Date(event.dateTime);
+                const formattedDateTime = eventDateTime.toLocaleString('es-ES', { year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+                const isExpanded = expandedEventId === event.id;
+                return (
+                  <li key={index} className="event-item">
+                    <div className="event-header">
+                      <span>{event.category}</span>
+                      <div className="event-buttons">
+                        <button className="trashButton" onClick={() => deleteEvent(event.id, navigate, setUser, event)}>🗑️</button>
+                        <button className="toggleButton" onClick={() => toggleEventDetails(event.id)}>
+                          {isExpanded ? '▲' : '▼'}
+                        </button>
+                      </div>
+                    </div>
+                    <div className={`event-details ${isExpanded ? 'expanded' : ''}`}>
+                      <p><strong>Fecha y hora:</strong> {formattedDateTime}</p>
+                      <p><strong>Categoría:</strong> {event.category}</p>
+                      <p><strong>Descripción:</strong> {event.description}</p>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          </>
+        ) : (
+          <p>No hay eventos disponibles.</p>
+        )}
+{showPagination && (
+          <Pagination className="pagination-container">
+            {Array.from({ length: Math.ceil(user.events.length / itemsPerPage) }, (_, index) => (
+              <Pagination.Item
+                key={index + 1}
+                active={index + 1 === currentPage}
+                onClick={() => handlePageChange(index + 1)}
+              >
+                {index + 1}
+              </Pagination.Item>
+            ))}
+          </Pagination>
+        )}
         <button className="btn btn-outline-danger logout-button" onClick={() => { deleteToken(); window.location.href = "/"; }}>Cerrar sesión</button>
       </div>
     </div>
-  )
+  );
 }

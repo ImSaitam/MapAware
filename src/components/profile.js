@@ -116,7 +116,7 @@ export default function Profile() {
             )
           })}
         </ul>
-        <button className="btn btn-outline-danger logout-button" onClick={() => { deleteToken(); window.location.href = "/"; }}>Cerrar sesión</button>
+        <button className="btn btn-outline-danger logout-button-" onClick={() => { deleteToken(); window.location.href = "/"; }}>Cerrar sesión</button>
       </div>
     </div>
   )
