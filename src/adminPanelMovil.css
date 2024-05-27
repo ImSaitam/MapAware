@@ -1,0 +1,103 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+
+
+
+.profile-admin-container {
+  padding: 10px;
+  position: relative;
+  min-height: 100vh;
+}
+
+.container-admin {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 10px;
+  box-sizing: border-box;
+  padding-bottom: 60px;
+}
+
+.container-admin h1 {
+  text-align: center;
+  color: #000000;
+  font-family: "Ubuntu", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+.event-title{
+  font-size: large;
+}
+.trashButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.toggleButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  float: right;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.event-details-admin {
+  display: none;
+  padding: 10px;
+  background-color: #fff;
+}
+
+.event-details-admin.expanded {
+  display: block;
+}
+
+.logout-button {
+  position: absolute;
+  bottom: 1%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 95%;
+}
+
+.profile-image {
+  width: 35%;
+  display: block;
+  margin: auto;
+}
+
+.event-list-admin {
+  list-style: none;
+  padding: 0;
+}
+
+.event-item-admin {
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.event-header-admin {
+    display: flex;
+    justify-content: space-between;
+    align-items: left;
+    padding: 20px; /* Aumenta el padding para hacerla más alta */
+    background-color: #f9f9f9;
+    min-height: 60px; /* O puedes definir una altura mínima */
+    align-items: center; 
+}
+
+
+.pagination {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px;
+  background-color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
