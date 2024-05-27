@@ -1,82 +1,94 @@
+body {
+  overflow-x: hidden; /* Evitar desplazamiento horizontal */
+}
+
+.container p{
+  margin-bottom: 3%;
+}
 .profile-movil-container {
-    padding: 10px;
-    position: relative;
-    min-height: 100vh;
-  }
-  
-  .container {
-    max-width: 100%;
-    margin: 0 auto;
-    padding: 10px;
-    box-sizing: border-box;
-  }
-  
-  h2 {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .event-list {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .event-item {
-    margin-bottom: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    overflow: hidden;
-  }
-  
-  .event-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: left;
-    padding: 10px;
-    background-color: #f9f9f9;
-  }
-  
+  padding: 10px;
+  position: relative;
+  min-height: 100vh;
+}
 
-  
-  .trashButton {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
-    
+.container {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 10px;
+  box-sizing: border-box;
+}
 
-  }
-  .toggleButton {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
-    float: right;
-    display: flex;
-    justify-content: flex-end;
-  }
-  
-  .event-details {
-    display: none;
-    padding: 10px;
-    background-color: #fff;
-  }
-  
-  .event-details.expanded {
-    display: block;
-  }
-  
-  .logout-button {
-    position: absolute;
-    bottom: 1%; 
-    left: 50%;
-    transform: translateX(-50%);
-    width: 95%; 
-  }
+h2 {
+  text-align: center;
+  margin-bottom: 2%;
+}
 
-  .profile-image{
-    width: 35%;
-    display: block;
-    margin: auto;
-  }
-  
+.event-list {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 100px; 
+}
+
+
+.event-item {
+  margin-bottom: 2.7%;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.event-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: left;
+  padding: 10px;
+  background-color: #f9f9f9;
+}
+
+.trashButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.toggleButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  float: right;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.event-details {
+  display: none;
+  padding: 10px;
+  background-color: #fff;
+}
+
+.event-details.expanded {
+  display: block;
+}
+
+.pagination-container {
+  position: absolute !important;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 12%;
+}
+
+.logout-button {
+  position: absolute;
+  bottom: 20px; /* Ajustar para dejar espacio suficiente */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 95%;
+}
+
+.profile-image {
+  width: 35%;
+  display: block;
+  margin: auto;
+}
