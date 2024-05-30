@@ -1,4 +1,10 @@
-import { MapContainer, Marker, Popup, TileLayer, ZoomControl } from "react-leaflet";
+import {
+  MapContainer,
+  Marker,
+  Popup,
+  TileLayer,
+  ZoomControl,
+} from "react-leaflet";
 import { Icon } from "leaflet";
 import { useState, useRef, useEffect, useCallback } from "react";
 import Modal from "react-bootstrap/Modal";
@@ -29,16 +35,16 @@ export default function Map() {
   const navigate = useNavigate();
 
   const fetchEvents = useCallback(async () => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     if (!token || token === undefined) {
-      navigate('/login'); // Redirect to login if no token
+      navigate("/login"); // Redirect to login if no token
     }
 
     try {
       const response = await axios.get("http://localhost:8080/event/all", {
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
       console.log("API response:", response.data); // Debug log for API response
       if (Array.isArray(response.data)) {
@@ -50,7 +56,7 @@ export default function Map() {
       console.error("Error fetching events:", error);
       if (error.response && error.response.status === 401) {
         // Token is invalid or expired, redirect to login
-        navigate('/login');
+        navigate("/login");
       }
     }
   }, [navigate]);
@@ -63,25 +69,30 @@ export default function Map() {
   const incidentIcons = {
     Accidente: {
       iconUrl: markerAccidente,
-      iconSize: [36, 36]
+      iconSize: [36, 36],
     },
     Obras: {
       iconUrl: markerObras,
-      iconSize: [36, 36]
-  },
+      iconSize: [36, 36],
+    },
     Manifestación: {
       iconUrl: markerManifestacion,
-      iconSize: [36, 36]
+      iconSize: [36, 36],
     },
     Asalto: {
       iconUrl: markerAsalto,
-      iconSize: [36, 36]
+      iconSize: [36, 36],
     },
     Piquete: {
       iconUrl: markerPiquete,
-      iconSize: [36, 36 ]
-    }
-};
+      iconSize: [36, 36],
+    },
+  };
+
+  const bounds = [
+    [86, -170], // Suroeste (SW)
+    [-86, 190], // Noreste (NE)
+  ];
 
   // Icono para la ubicación actual
   const CurrentLocationIcon = new Icon({
@@ -159,9 +170,11 @@ export default function Map() {
           <Modal.Title>Añadir un incidente</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <AddIncident onEventAdded={fetchEvents} setShowIncidentModal={setShowIncidentModal}/>
+          <AddIncident
+            onEventAdded={fetchEvents}
+            setShowIncidentModal={setShowIncidentModal}
+          />
         </Modal.Body>
-
       </Modal>
 
       {/* Mapa */}
@@ -170,22 +183,34 @@ export default function Map() {
         zoom={13}
         ref={mapRef}
         zoomControl={false}
+        minZoom={5}
+        maxBounds={bounds}
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         {/* Marcadores de eventos */}
-        {Array.isArray(events) && events.map((event, index) => (
-  <Marker key={index} position={[event.latitude, event.longitude]} icon={new Icon(incidentIcons[event.category])}>
-    <Popup>
-      <p>Añadido por <Link to={`/user/${event.user.username}`}>{event.user.username}</Link></p>
-      <h3>{event.category}</h3>
-      <p>{event.description}</p>
-      <p>Gravedad: {event.degree}</p>
-    </Popup>
-  </Marker>
-))}
+        {Array.isArray(events) &&
+          events.map((event, index) => (
+            <Marker
+              key={index}
+              position={[event.latitude, event.longitude]}
+              icon={new Icon(incidentIcons[event.category])}
+            >
+              <Popup>
+                <p>
+                  Añadido por{" "}
+                  <Link to={`/user/${event.user.username}`}>
+                    {event.user.username}
+                  </Link>
+                </p>
+                <h3>{event.category}</h3>
+                <p>{event.description}</p>
+                <p>Gravedad: {event.degree}</p>
+              </Popup>
+            </Marker>
+          ))}
         {/* Marcador para la ubicación actual */}
         <LocateMarker position={position} />
         <ZoomControl className="zoomControl" position="topleft" />

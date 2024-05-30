@@ -1,7 +1,13 @@
 import { useState, useRef, useEffect } from "react";
 import { Form } from "react-bootstrap";
 import LeafletgeoSearch from "./GeoSearch.js";
-import { MapContainer, TileLayer, ZoomControl, useMap, Marker } from "react-leaflet";
+import {
+  MapContainer,
+  TileLayer,
+  ZoomControl,
+  useMap,
+  Marker,
+} from "react-leaflet";
 import { Icon } from "leaflet";
 import axios from "axios";
 
@@ -10,7 +16,8 @@ function GetMapCenter({ setCenter }) {
   const [center, setMapCenter] = useState(map.getCenter());
 
   const centerMapIcon = new Icon({
-    iconUrl: "https://static-00.iconduck.com/assets.00/map-marker-icon-342x512-gd1hf1rz.png",
+    iconUrl:
+      "https://static-00.iconduck.com/assets.00/map-marker-icon-342x512-gd1hf1rz.png",
     iconSize: [19, 28],
   });
 
@@ -22,7 +29,11 @@ function GetMapCenter({ setCenter }) {
 
   map.on("moveend", updateCenter);
 
-  return center && <Marker position={[center.lat, center.lng]} icon={centerMapIcon} />;
+  return (
+    center && (
+      <Marker position={[center.lat, center.lng]} icon={centerMapIcon} />
+    )
+  );
 }
 
 export function AddIncident({ onEventAdded, setShowIncidentModal }) {
@@ -44,9 +55,9 @@ export function AddIncident({ onEventAdded, setShowIncidentModal }) {
     try {
       const response = await axios.post("http://localhost:8080/event", event, {
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
       });
       console.log("Incident added:", response.data);
       onEventAdded(); // Llama la función callback después de añadir un evento
@@ -71,14 +82,18 @@ export function AddIncident({ onEventAdded, setShowIncidentModal }) {
   return (
     <Form onSubmit={handleSubmit}>
       <Form.Group className="mb-3">
-        <Form.Label>¿Qué clase de incidente ocurrió en esa ubicación?</Form.Label>
+        <Form.Label>
+          ¿Qué clase de incidente ocurrió en esa ubicación?
+        </Form.Label>
         <Form.Control
           as="select"
           value={event.category}
           onChange={(e) => setEvent({ ...event, category: e.target.value })}
           required
         >
-          <option disabled value="">Tipo de incidente...</option>
+          <option disabled value="">
+            Tipo de incidente...
+          </option>
           <option value="Accidente">Accidente</option>
           <option value="Asalto">Asalto</option>
           <option value="Manifestación">Manifestación</option>
@@ -130,7 +145,11 @@ export function AddIncident({ onEventAdded, setShowIncidentModal }) {
           <LeafletgeoSearch />
         </MapContainer>
       </Form.Group>
-      <button type="submit" className="btn btn-primary" onClick={() => setShowIncidentModal(false)}>
+      <button
+        type="submit"
+        className="btn btn-primary"
+        onClick={() => setShowIncidentModal(false)}
+      >
         Añadir Incidente
       </button>
     </Form>
