@@ -15,6 +15,7 @@ import LeafletgeoSearch from "./GeoSearch.js";
 import { AddIncident } from "./forms.js";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
+import { Dropdown, ButtonGroup, Form } from "react-bootstrap";
 import markerAccidente from "../images/marker-accidente.svg";
 import markerObras from "../images/marker-obra.svg";
 import markerManifestacion from "../images/marker-manifestacion.svg";
@@ -34,12 +35,31 @@ export default function Map() {
 
   const navigate = useNavigate();
 
+  const [checkboxes, setCheckboxes] = useState([
+    { id: 1, label: 'Accidente', checked: true },
+    { id: 2, label: 'Obras', checked: true },
+    { id: 3, label: 'Manifestación', checked: true },
+    { id: 4, label: 'Asalto', checked: true },
+    { id: 5, label: 'Piquete', checked: true },
+  ]);
+
+  const handleCheckboxChange = (id) => {
+    setCheckboxes(
+      checkboxes.map((checkbox) => {
+        if (checkbox.id === id) {
+          return {...checkbox, checked:!checkbox.checked };
+        }
+        return checkbox;
+      })
+    );
+  };
+
   const fetchEvents = useCallback(async () => {
     const token = localStorage.getItem("token");
     if (!token || token === undefined) {
       navigate("/login"); // Redirect to login if no token
     }
-
+  
     try {
       const response = await axios.get("http://localhost:8080/event/all", {
         headers: {
@@ -48,7 +68,11 @@ export default function Map() {
       });
       console.log("API response:", response.data); // Debug log for API response
       if (Array.isArray(response.data)) {
-        setEvents(response.data);
+        const filteredEvents = response.data.filter((event) => {
+          const checkbox = checkboxes.find((c) => c.label === event.category);
+          return checkbox && checkbox.checked;
+        });
+        setEvents(filteredEvents);
       } else {
         console.error("Expected an array of events, but got:", response.data);
       }
@@ -59,7 +83,11 @@ export default function Map() {
         navigate("/login");
       }
     }
-  }, [navigate]);
+  }, [navigate, checkboxes]);
+
+  useEffect(() => {
+    fetchEvents();
+  }, [fetchEvents, checkboxes]);
 
   useEffect(() => {
     fetchEvents();
@@ -176,6 +204,26 @@ export default function Map() {
           />
         </Modal.Body>
       </Modal>
+      <div className="dropupFilter">
+        <Dropdown drop="up" as={ButtonGroup}>
+        <Dropdown.Toggle variant="success">
+          Filtros
+        </Dropdown.Toggle>
+        <Dropdown.Menu>
+        {checkboxes.map((checkbox) => (
+  <Form.Check
+    key={checkbox.id}
+    type="checkbox"
+    className="eventType"
+    id={`checkbox-${checkbox.id}`}
+    label={checkbox.label}
+    checked={checkbox.checked}
+    onChange={() => handleCheckboxChange(checkbox.id)}
+  />
+))}
+        </Dropdown.Menu>
+        </Dropdown>
+      </div>
 
       {/* Mapa */}
       <MapContainer

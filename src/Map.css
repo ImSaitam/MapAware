@@ -99,3 +99,14 @@
   .popUpImage {
     height: 16.7em;
   }
+
+  .dropupFilter {
+    z-index: 1000;
+    position: absolute;
+    left: 12px;
+    bottom: 10px;
+  }
+
+  .eventType {
+    margin-left: .5rem;
+  }
