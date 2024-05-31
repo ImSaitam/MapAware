@@ -133,6 +133,7 @@ export function AddIncident({ onEventAdded, setShowIncidentModal }) {
           ref={mapRef}
           zoomControl={false}
           maxBounds={bounds}
+          minZoom={4}
         >
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
