@@ -59,20 +59,24 @@ export default function Map() {
     if (!token || token === undefined) {
       navigate("/login"); // Redirect to login if no token
     }
-  
+
     try {
-      const response = await axios.get("http://localhost:8080/event/all", {
+      // Construir la URL con los parámetros de filtro
+      const selectedCategories = checkboxes
+        .filter((checkbox) => checkbox.checked)
+        .map((checkbox) => `cat=${encodeURIComponent(checkbox.label.toLowerCase())}`)
+        .join("&");
+
+      const url = `http://localhost:8080/event/filtered?${selectedCategories}`;
+
+      const response = await axios.get(url, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
       console.log("API response:", response.data); // Debug log for API response
       if (Array.isArray(response.data)) {
-        const filteredEvents = response.data.filter((event) => {
-          const checkbox = checkboxes.find((c) => c.label === event.category);
-          return checkbox && checkbox.checked;
-        });
-        setEvents(filteredEvents);
+        setEvents(response.data);
       } else {
         console.error("Expected an array of events, but got:", response.data);
       }
@@ -88,10 +92,6 @@ export default function Map() {
   useEffect(() => {
     fetchEvents();
   }, [fetchEvents, checkboxes]);
-
-  useEffect(() => {
-    fetchEvents();
-  }, [fetchEvents]);
 
   // Icono para los marcadores
   const incidentIcons = {
@@ -231,7 +231,7 @@ export default function Map() {
         zoom={13}
         ref={mapRef}
         zoomControl={false}
-        minZoom={5}
+        minZoom={4}
         maxBounds={bounds}
       >
         <TileLayer

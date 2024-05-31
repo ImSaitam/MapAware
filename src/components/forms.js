@@ -48,6 +48,11 @@ export function AddIncident({ onEventAdded, setShowIncidentModal }) {
     longitude: null,
   });
 
+  const bounds = [
+    [86, -190], // Suroeste (SW)
+    [-86, 230], // Noreste (NE)
+  ];
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Submitting event:", event); // Debug log
@@ -127,6 +132,7 @@ export function AddIncident({ onEventAdded, setShowIncidentModal }) {
           zoom={16}
           ref={mapRef}
           zoomControl={false}
+          maxBounds={bounds}
         >
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
