@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import "../adminPanelMovil.css";
 import axios from 'axios';
@@ -6,11 +6,6 @@ import { Button } from 'react-bootstrap';
 
 function deleteEvent(eventId, navigate, setUser, event) {
   const token = localStorage.getItem('token');
-
-  if (!token) {
-    navigate('/');
-    return;
-  }
 
   axios.delete(`http://localhost:8080/event/delete/${eventId}`, {
     headers: {
@@ -41,6 +36,34 @@ export default function AdminPanelMovil() {
     setExpandedEventId(expandedEventId === eventId ? null : eventId);
   };
 
+  const fetchUser = useCallback(async () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      navigate('/');
+      return;
+    }
+
+    try {
+      const response = await axios.get('http://localhost:8080/user', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      const user = response.data;
+      if (!user.role.includes('ADMIN')) {
+        navigate('/');
+      }
+    } catch (error) {
+      console.error("Error fetching user:", error);
+      navigate('/');
+    }
+  }, [navigate]);
+
+  useEffect(() => {
+    fetchUser();
+  }, [fetchUser]);
+
   useEffect(() => {
     const token = localStorage.getItem('token');
   
@@ -64,7 +87,7 @@ export default function AdminPanelMovil() {
         });
       })
      .catch(error => {
-        console.error("Error al cargar los eventos:", error);
+        console.error("Error fetching events:", error);
       });
   }, [page, navigate]);
 
