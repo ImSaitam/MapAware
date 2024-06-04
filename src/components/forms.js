@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect } from "react";
 import { Form } from "react-bootstrap";
-import LeafletgeoSearch from "./GeoSearch.js";
 import {
   MapContainer,
   TileLayer,
@@ -149,7 +148,6 @@ export function AddIncident({ onEventAdded, setShowIncidentModal }) {
             }
           />
           <ZoomControl className="zoomControl" position="bottomright" />
-          <LeafletgeoSearch />
         </MapContainer>
       </Form.Group>
       <button
