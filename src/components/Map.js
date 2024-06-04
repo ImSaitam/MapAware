@@ -36,18 +36,18 @@ export default function Map() {
   const navigate = useNavigate();
 
   const [checkboxes, setCheckboxes] = useState([
-    { id: 1, label: 'Accidente', checked: true },
-    { id: 2, label: 'Obras', checked: true },
-    { id: 3, label: 'Manifestación', checked: true },
-    { id: 4, label: 'Asalto', checked: true },
-    { id: 5, label: 'Piquete', checked: true },
+    { id: 1, label: "Accidente", checked: true },
+    { id: 2, label: "Obras", checked: true },
+    { id: 3, label: "Manifestación", checked: true },
+    { id: 4, label: "Asalto", checked: true },
+    { id: 5, label: "Piquete", checked: true },
   ]);
 
   const handleCheckboxChange = (id) => {
     setCheckboxes(
       checkboxes.map((checkbox) => {
         if (checkbox.id === id) {
-          return {...checkbox, checked:!checkbox.checked };
+          return { ...checkbox, checked: !checkbox.checked };
         }
         return checkbox;
       })
@@ -64,7 +64,10 @@ export default function Map() {
       // Construir la URL con los parámetros de filtro
       const selectedCategories = checkboxes
         .filter((checkbox) => checkbox.checked)
-        .map((checkbox) => `cat=${encodeURIComponent(checkbox.label.toLowerCase())}`)
+        .map(
+          (checkbox) =>
+            `cat=${encodeURIComponent(checkbox.label.toLowerCase())}`
+        )
         .join("&");
 
       const url = `http://localhost:8080/event/filtered?${selectedCategories}`;
@@ -122,19 +125,9 @@ export default function Map() {
     [-86, 190], // Noreste (NE)
   ];
 
-  // Icono para la ubicación actual
-  const CurrentLocationIcon = new Icon({
-    iconUrl: "https://cdn-icons-png.flaticon.com/512/106/106438.png",
-    iconSize: [19, 19],
-  });
-
   // Componente LocateMarker con setPosition como prop
   function LocateMarker({ position }) {
-    return position ? (
-      <Marker position={position} icon={CurrentLocationIcon}>
-        <Popup>Ubicación Actual</Popup>
-      </Marker>
-    ) : null;
+    return position;
   }
 
   // Función para manejar la ubicación actual
@@ -189,6 +182,24 @@ export default function Map() {
           alt=""
         ></img>
       </button>
+      <div className="dropupFilter">
+        <Dropdown drop="up" as={ButtonGroup}>
+          <Dropdown.Toggle variant="success">Filtros</Dropdown.Toggle>
+          <Dropdown.Menu>
+            {checkboxes.map((checkbox) => (
+              <Form.Check
+                key={checkbox.id}
+                type="checkbox"
+                className="eventType"
+                id={`checkbox-${checkbox.id}`}
+                label={checkbox.label}
+                checked={checkbox.checked}
+                onChange={() => handleCheckboxChange(checkbox.id)}
+              />
+            ))}
+          </Dropdown.Menu>
+        </Dropdown>
+      </div>
       {/* Modal */}
       <Modal
         show={showIncidentModal}
@@ -204,27 +215,6 @@ export default function Map() {
           />
         </Modal.Body>
       </Modal>
-      <div className="dropupFilter">
-        <Dropdown drop="up" as={ButtonGroup}>
-        <Dropdown.Toggle variant="success">
-          Filtros
-        </Dropdown.Toggle>
-        <Dropdown.Menu>
-        {checkboxes.map((checkbox) => (
-  <Form.Check
-    key={checkbox.id}
-    type="checkbox"
-    className="eventType"
-    id={`checkbox-${checkbox.id}`}
-    label={checkbox.label}
-    checked={checkbox.checked}
-    onChange={() => handleCheckboxChange(checkbox.id)}
-  />
-))}
-        </Dropdown.Menu>
-        </Dropdown>
-      </div>
-
       {/* Mapa */}
       <MapContainer
         center={[-34.603851, -58.381775]}
@@ -262,7 +252,7 @@ export default function Map() {
         {/* Marcador para la ubicación actual */}
         <LocateMarker position={position} />
         <ZoomControl className="zoomControl" position="topleft" />
-        <LeafletgeoSearch />
+        <LeafletgeoSearch className="leaflet-geosearch" />
       </MapContainer>
     </div>
   );

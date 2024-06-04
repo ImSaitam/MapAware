@@ -2,6 +2,7 @@ import { useMap } from "react-leaflet";
 import { useEffect } from "react";
 import { GeoSearchControl, OpenStreetMapProvider } from "leaflet-geosearch";
 
+
 function LeafletgeoSearch() {
     const map = useMap();
     useEffect(() => {
@@ -11,6 +12,8 @@ function LeafletgeoSearch() {
         provider,
         showMarker: false,
         showPopup: false,
+        searchLabel: 'Buscar en MapAware',
+        style: 'bar',
       });
       map.addControl(searchControl);
 

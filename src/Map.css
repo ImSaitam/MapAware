@@ -4,11 +4,31 @@
   
   .locate-button {
     position: absolute;
-    bottom: 65px;
+    bottom: 69px;
     background-color: transparent;
     border-style: none;
-    right: 10px;
+    right: 5.5px;
     z-index: 1000;
+  }
+
+  .button-add {
+    position: absolute;
+    right: 5px;
+    bottom: 110px;
+    z-index: 1000;
+    background-color: transparent;
+    border-style: none;
+  }
+
+  .dropupFilter {
+    z-index: 1000;
+    position: absolute;
+    right: 10px;
+    bottom: 23px;
+  }
+
+  .eventType {
+    margin-left: .5rem;
   }
 
   .location-icon {
@@ -41,15 +61,6 @@
     border-radius: 50%;
   }
   
-  .button-add {
-    position: absolute;
-    right: 9.5px;
-    bottom: 105px;
-    z-index: 1000;
-    background-color: transparent;
-    border-style: none;
-  }
-
   .add-icon {
     height: 2em;
     background-color: white;
@@ -61,25 +72,6 @@
 
   .add-icon:hover {
     background-color: #d4d4d4;
-  }
-  
-  .forgotPswrd {
-    font-size: .8em!important;
-    cursor: pointer;
-    color: blue;
-    border-style: none;
-    background-color: transparent;
-    text-decoration-line: none!important;
-  }
-
-  .register-button {
-    font-size: .8em!important;
-    cursor: pointer;
-    margin-left: 8.5em;
-    color: blue;
-    border-style: none;
-    background-color: transparent;
-    text-decoration-line: none!important;
   }
 
   #backButton {
@@ -96,17 +88,8 @@
     resize: none!important;
   }
 
-  .popUpImage {
-    height: 16.7em;
+  .dark-mode {
+    filter: invert(100%);
   }
 
-  .dropupFilter {
-    z-index: 1000;
-    position: absolute;
-    left: 12px;
-    bottom: 10px;
-  }
-
-  .eventType {
-    margin-left: .5rem;
-  }
+  

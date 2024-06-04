@@ -33,7 +33,7 @@
   
   .loginForm {
     width: 100%;
-    max-width: 400px;
+    max-width: 600px;
     padding: 20px;
     background-color: #ffffff;
     border-radius: 10px;
@@ -87,6 +87,12 @@
     font-weight: bold;
     text-align: center;
     margin-top: 10px;
+  }
+
+  .forgotPswrdButton {
+    float: right;
+    margin-bottom: 1em;
+    text-decoration: none;
   }
   
   @keyframes slide {

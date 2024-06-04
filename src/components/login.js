@@ -79,6 +79,9 @@ window.onload = redirectToMobileVersion;
               }
               required
             />
+            <Link variant="link" className="forgotPswrdButton" to={"/"}>
+              Olvidaste tu contraseña?
+            </Link>
          </Form.Group>
           <button type="submit" className="btn btn-primary">
             Iniciar sesión

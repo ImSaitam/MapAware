@@ -25,8 +25,6 @@ export default function App() {
               <Route path="/RegisterMovil" element={<RegisterMovil />} />
               <Route path="/loginMovil" element={<LoginFormMovil />} />
               <Route path="/adminMovil" element={<AdminPanelMovil />} />
-
-              
             </Routes>
         </BrowserRouter>
   );
