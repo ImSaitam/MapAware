@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import "../profile.css";
 import axios from 'axios';
-import { Button } from 'react-bootstrap';
+import { Button, Modal, ModalBody } from 'react-bootstrap';
+import ChangeProfileImage from './changeImage.js';
 
 function deleteToken() {
   localStorage.removeItem('token');
@@ -40,6 +41,7 @@ export default function Profile() {
   const navigate = useNavigate();
   const [user, setUser] = useState({}); // Estado para guardar los datos del usuario
   const [expandedEventId, setExpandedEventId] = useState(null);
+  const [changeImageModal, setChangeImageModal] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -87,6 +89,21 @@ export default function Profile() {
           </svg>
         </Link>
         <h2>Perfil del usuario</h2>
+        <img src={user.profileImage ? "http://localhost:8080" + user.profileImage : "profileImages/default-profile.png"} className='profileImage' alt='foto de perfil' onClick={() => setChangeImageModal(true)}/>
+        <Modal show={changeImageModal} 
+        onHide={() => setChangeImageModal(false)} >
+          <Modal.Header closeButton>
+            <Modal.Title>
+              Cambiar imagen de perfil
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <ChangeProfileImage 
+                onChangeImage={() => { setChangeImageModal(false); }} // Cierra el modal al cambiar la imagen
+                setChangeImageModal={setChangeImageModal} // Pasa la función para cambiar el estado del modal
+            />
+          </Modal.Body>
+        </Modal>
         <p>Nombre de usuario: {user.username}</p>
         <p>Email: {user.email}</p>
         <p>Eventos:</p>

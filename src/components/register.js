@@ -20,7 +20,7 @@ export default function Register() {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
-      navigate('/'); // Redirect to login if no token
+      navigate('/');
     }
   }, [navigate]);
 
@@ -38,6 +38,7 @@ export default function Register() {
       alert("Error al registrar");
     }
   };
+
   function redirectToMobileVersion() {
     const userAgent = navigator.userAgent.toLowerCase();
     const isMobile = /iphone|ipad|ipod|android|blackberry|opera mini|windows mobile|palm|iemobile|symbian/i.test(userAgent);

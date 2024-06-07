@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import "../profileMovil.css";  // Importar el CSS específico para móviles
 import { Pagination } from 'react-bootstrap'; // Importar el componente de paginación de Bootstrap
+import { Modal } from 'react-bootstrap';
+import ChangeProfileImage from './changeImage.js';
 
 function deleteToken() {
   localStorage.removeItem('token');
@@ -40,6 +42,7 @@ export default function ProfileMovil() {
   const navigate = useNavigate();
   const [user, setUser] = useState({});
   const [expandedEventId, setExpandedEventId] = useState(null);
+  const [changeImageModal, setChangeImageModal] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5); // Número de elementos por página inicial
 
@@ -97,10 +100,22 @@ export default function ProfileMovil() {
           </svg>
         </Link>
         <br></br>      
-        <img src="https://www.delacabeza-rivera.es/wp-content/uploads/2020/06/PERFIL-VACIO.png" alt="Imagen de perfil" className='profile-image'></img>  {/* cambiar por imagen real */}
-        
+        <img src={user.profileImage ? "http://localhost:8080" + user.profileImage : "profileImages/default-profile.png"} className='profileImage' alt='foto de perfil' onClick={() => setChangeImageModal(true)}/>
         <h2>Perfil del usuario</h2>
-  
+        <Modal show={changeImageModal} 
+        onHide={() => setChangeImageModal(false)} >
+          <Modal.Header closeButton>
+            <Modal.Title>
+              Cambiar imagen de perfil
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <ChangeProfileImage 
+                onChangeImage={() => { setChangeImageModal(false); }} // Cierra el modal al cambiar la imagen
+                setChangeImageModal={setChangeImageModal} // Pasa la función para cambiar el estado del modal
+            />
+          </Modal.Body>
+        </Modal>
         <p>Nombre de usuario: {user.username}</p>
         <p>Email: {user.email}</p>
         <p>Eventos:</p>

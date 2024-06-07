@@ -22,19 +22,13 @@ import markerManifestacion from "../images/marker-manifestacion.svg";
 import markerAsalto from "../images/marker-asalto.svg";
 import markerPiquete from "../images/marker-piquete.svg";
 
-// Función del Mapa
 export default function Map() {
-  // Estado para la ubicación actual
   const [position, setPosition] = useState(null);
-  // Estado para controlar la visibilidad del modal de subida de incidente
   const [showIncidentModal, setShowIncidentModal] = useState(false);
-  // Estado para eventos
   const [events, setEvents] = useState([]);
-  // Estado para mostrar la vista previa de la subida de imagen
   const mapRef = useRef();
-
   const navigate = useNavigate();
-
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [checkboxes, setCheckboxes] = useState([
     { id: 1, label: "Accidente", checked: true },
     { id: 2, label: "Obras", checked: true },
@@ -57,11 +51,10 @@ export default function Map() {
   const fetchEvents = useCallback(async () => {
     const token = localStorage.getItem("token");
     if (!token || token === undefined) {
-      navigate("/login"); // Redirect to login if no token
+      navigate("/login");
     }
 
     try {
-      // Construir la URL con los parámetros de filtro
       const selectedCategories = checkboxes
         .filter((checkbox) => checkbox.checked)
         .map(
@@ -71,13 +64,12 @@ export default function Map() {
         .join("&");
 
       const url = `http://localhost:8080/event/filtered?${selectedCategories}`;
-
       const response = await axios.get(url, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("API response:", response.data); // Debug log for API response
+      console.log("API response:", response.data);
       if (Array.isArray(response.data)) {
         setEvents(response.data);
       } else {
@@ -86,7 +78,6 @@ export default function Map() {
     } catch (error) {
       console.error("Error fetching events:", error);
       if (error.response && error.response.status === 401) {
-        // Token is invalid or expired, redirect to login
         navigate("/login");
       }
     }
@@ -96,7 +87,6 @@ export default function Map() {
     fetchEvents();
   }, [fetchEvents, checkboxes]);
 
-  // Icono para los marcadores
   const incidentIcons = {
     Accidente: {
       iconUrl: markerAccidente,
@@ -121,16 +111,14 @@ export default function Map() {
   };
 
   const bounds = [
-    [86, -170], // Suroeste (SW)
-    [-86, 190], // Noreste (NE)
+    [86, -170],
+    [-86, 190],
   ];
 
-  // Componente LocateMarker con setPosition como prop
   function LocateMarker({ position }) {
     return position;
   }
 
-  // Función para manejar la ubicación actual
   const handleLocate = () => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -138,7 +126,7 @@ export default function Map() {
         mapRef.current.flyTo(
           [position.coords.latitude, position.coords.longitude],
           15
-        ); // Zoom al lugar de la ubicación actual
+        );
       },
       (error) => {
         console.error("Error al obtener la ubicación:", error);
@@ -146,16 +134,12 @@ export default function Map() {
     );
   };
 
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
   return (
     <div className="map-container">
-      {/* Botón para ubicación actual */}
-      <button onClick={handleLocate} className="locate-button">
-        <img
-          src="https://cdn-icons-png.flaticon.com/512/60/60523.png"
-          className="location-icon"
-          alt=""
-        ></img>
-      </button>
       {/* Botón para abrir el modal */}
       <Link
         style={{
@@ -174,17 +158,30 @@ export default function Map() {
           alt=""
         ></img>
       </Link>
-
-      <button className="button-add" onClick={() => setShowIncidentModal(true)}>
-        <img
-          src="https://pixsector.com/cache/c5433603/av741f3e5fd1c88304cf8.png"
-          className="add-icon"
-          alt=""
-        ></img>
-      </button>
+      <div className={`buttons-container ${isDropdownOpen ? "moved-up" : ""}`}>
+        <button onClick={handleLocate} className="locate-button">
+          <img
+            src="https://cdn-icons-png.flaticon.com/512/60/60523.png"
+            className="location-icon"
+            alt=""
+          ></img>
+        </button>
+        <button
+          className="button-add"
+          onClick={() => setShowIncidentModal(true)}
+        >
+          <img
+            src="https://pixsector.com/cache/c5433603/av741f3e5fd1c88304cf8.png"
+            className="add-icon"
+            alt=""
+          ></img>
+        </button>
+      </div>
       <div className="dropupFilter">
-        <Dropdown drop="up" as={ButtonGroup}>
-          <Dropdown.Toggle variant="success">Filtros</Dropdown.Toggle>
+        <Dropdown drop="up" as={ButtonGroup} show={isDropdownOpen}>
+          <Dropdown.Toggle variant="success" onClick={toggleDropdown}>
+            Filtros
+          </Dropdown.Toggle>
           <Dropdown.Menu>
             {checkboxes.map((checkbox) => (
               <Form.Check
@@ -200,7 +197,6 @@ export default function Map() {
           </Dropdown.Menu>
         </Dropdown>
       </div>
-      {/* Modal */}
       <Modal
         show={showIncidentModal}
         onHide={() => setShowIncidentModal(false)}
@@ -215,7 +211,6 @@ export default function Map() {
           />
         </Modal.Body>
       </Modal>
-      {/* Mapa */}
       <MapContainer
         center={[-34.603851, -58.381775]}
         zoom={13}
@@ -228,7 +223,6 @@ export default function Map() {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        {/* Marcadores de eventos */}
         {Array.isArray(events) &&
           events.map((event, index) => (
             <Marker
@@ -249,7 +243,6 @@ export default function Map() {
               </Popup>
             </Marker>
           ))}
-        {/* Marcador para la ubicación actual */}
         <LocateMarker position={position} />
         <ZoomControl className="zoomControl" position="topleft" />
         <LeafletgeoSearch className="leaflet-geosearch" />

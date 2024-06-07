@@ -79,6 +79,14 @@
     right: calc(10% + 20px); /* Ajusta la posición hacia la izquierda */
     display: none;
   }
+
+  .profileImage {
+    height: 90px;
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+    cursor: pointer;
+  }
   
   .profile-container .toggleButton {
     background: none;

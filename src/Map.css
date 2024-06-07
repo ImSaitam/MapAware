@@ -88,8 +88,30 @@
     resize: none!important;
   }
 
-  .dark-mode {
-    filter: invert(100%);
+  .buttons-container.moved-up .locate-button {
+    bottom: 31vh; /* Ajustar según sea necesario */
+  }
+  
+  .buttons-container.moved-up .button-add {
+    bottom: 36.5vh; /* Ajustar según sea necesario */
   }
 
-  
+  @media (max-width: 1000px) {
+    .buttons-container.moved-up .locate-button {
+      bottom: 27vh; /* Ajustar según sea necesario */
+    }
+    
+    .buttons-container.moved-up .button-add {
+      bottom: 23vh; /* Ajustar según sea necesario */
+    }
+  }
+
+  @media (max-width: 800px) {
+    .buttons-container.moved-up .locate-button {
+      bottom: 30vh; /* Ajustar según sea necesario */
+    }
+    
+    .buttons-container.moved-up .button-add {
+      bottom: 25.5vh; /* Ajustar según sea necesario */
+    }
+  }
