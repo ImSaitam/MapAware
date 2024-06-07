@@ -1,31 +1,37 @@
 import axios from "axios";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Form } from "react-bootstrap";
+import AvatarEditor from "react-avatar-editor";
 
 export default function ChangeProfileImage({ onChangeImage, setChangeImageModal }) {
     const token = localStorage.getItem("token");
 
     const [userImage, setUserImage] = useState(null);  // Estado para guardar el archivo de la imagen
+    const editorRef = useRef(null); // Referencia al editor
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        try {
-            const formData = new FormData();
-            formData.append("image", userImage);  // Agrega el archivo de la imagen al FormData
+        if (editorRef.current) {
+            const canvas = editorRef.current.getImage();
+            canvas.toBlob(async (blob) => {
+                const formData = new FormData();
+                formData.append("image", blob, "avatar.png");  // Agrega el blob de la imagen al FormData
 
-            const response = await axios.put("http://localhost:8080/user/image", formData, {
-                headers: {
-                    "Content-Type": "multipart/form-data",  // Establece el encabezado Content-Type
-                    Authorization: `Bearer ${token}`,
-                },
-            });
+                try {
+                    const response = await axios.put("http://localhost:8080/user/image", formData, {
+                        headers: {
+                            "Content-Type": "multipart/form-data",  // Establece el encabezado Content-Type
+                            Authorization: `Bearer ${token}`,
+                        },
+                    });
 
-            console.log("Foto cambiada.", response);
-            onChangeImage();
-        }
-        catch (error) {
-            console.log("Hubo un error al cambiar la foto de perfil.", error);
+                    console.log("Foto cambiada.", response);
+                    onChangeImage();
+                } catch (error) {
+                    console.log("Hubo un error al cambiar la foto de perfil.", error);
+                }
+            }, "image/png");
         }
     };
 
@@ -42,6 +48,17 @@ export default function ChangeProfileImage({ onChangeImage, setChangeImageModal 
                     onChange={handleImageChange}
                 />
             </Form.Group>
+            {userImage && (
+                <AvatarEditor
+                    ref={editorRef}
+                    image={userImage}
+                    width={250}
+                    height={250}
+                    border={50}
+                    borderRadius={125} // Hace que la imagen sea circular
+                    scale={1.2}
+                />
+            )}
             <button 
                 type="submit"
                 className="btn btn-primary"

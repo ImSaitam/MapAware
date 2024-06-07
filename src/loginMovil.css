@@ -16,6 +16,10 @@
   min-height: 100vh;
 }
 
+.profileImage {
+  border-radius: 50%;
+}
+
 .loginForm-movil {
   max-width: 100%;
   margin: 0 auto;

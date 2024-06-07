@@ -86,6 +86,7 @@
     justify-content: center;
     margin: 0 auto;
     cursor: pointer;
+    border-radius: 50%;
   }
   
   .profile-container .toggleButton {
