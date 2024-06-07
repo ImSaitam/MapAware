@@ -9,6 +9,7 @@ import {
 } from "react-leaflet";
 import { Icon } from "leaflet";
 import axios from "axios";
+import config from "./config.js";
 
 function GetMapCenter({ setCenter }) {
   const map = useMap();
@@ -57,7 +58,7 @@ export function AddIncident({ onEventAdded, setShowIncidentModal }) {
     console.log("Submitting event:", event); // Debug log
 
     try {
-      const response = await axios.post("http://localhost:8080/event", event, {
+      const response = await axios.post(`${config.Url}/event`, event, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,

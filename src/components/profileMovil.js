@@ -4,6 +4,7 @@ import axios from 'axios';
 import "../profileMovil.css";  // Importar el CSS específico para móviles
 import { Pagination } from 'react-bootstrap'; // Importar el componente de paginación de Bootstrap
 import { Modal } from 'react-bootstrap';
+import config from './config.js';
 import ChangeProfileImage from './changeImage.js';
 
 function deleteToken() {
@@ -19,7 +20,7 @@ function deleteEvent(eventId, navigate, setUser, event) {
     return;
   }
 
-  axios.delete(`http://localhost:8080/event/delete/${eventId}`, {
+  axios.delete(`${config.Url}/event/delete/${eventId}`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -54,7 +55,7 @@ export default function ProfileMovil() {
       return;
     }
 
-    axios.get('http://localhost:8080/user', {
+    axios.get(`${config.Url}/user`, {
       headers: {
         Authorization: `Bearer ${token}`
       }

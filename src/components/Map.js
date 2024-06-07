@@ -17,6 +17,7 @@ import { AddIncident } from "./forms.js";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import { Dropdown, ButtonGroup, Form } from "react-bootstrap";
+import config from "./config.js";
 import markerAccidente from "../images/marker-accidente.svg";
 import markerObras from "../images/marker-obra.svg";
 import markerManifestacion from "../images/marker-manifestacion.svg";
@@ -67,7 +68,7 @@ export default function Map() {
             `cat=${encodeURIComponent(checkbox.label.toLowerCase())}`
         )
         .join("&");
-      const url = `http://localhost:8080/event/filtered?${selectedCategories}`;
+      const url = `${config.Url}/event/filtered?${selectedCategories}`;
       const response = await axios.get(url, {
         headers: {
           Authorization: `Bearer ${token}`,

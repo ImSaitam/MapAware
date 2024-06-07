@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import "../adminPanel.css";
 import axios from 'axios';
 import { Button } from 'react-bootstrap';
+import config from './config.js';
 
 function deleteEvent(eventId, navigate, setUser, event) {
   const token = localStorage.getItem('token');
@@ -12,7 +13,7 @@ function deleteEvent(eventId, navigate, setUser, event) {
     return;
   }
 
-  axios.delete(`http://localhost:8080/event/delete/${eventId}`, {
+  axios.delete(`${config.Url}/event/delete/${eventId}`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -49,7 +50,7 @@ export default function AdminPanel() {
     }
 
     try {
-      const response = await axios.get('http://localhost:8080/user', {
+      const response = await axios.get(`${config.Url}user`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -77,7 +78,7 @@ export default function AdminPanel() {
       return;
     }
   
-    axios.get(`http://localhost:8080/event/all-pag?pag=${page}&cant=5`, {
+    axios.get(`${config.Url}event/all-pag?pag=${page}&cant=5`, {
       headers: {
         Authorization: `Bearer ${token}`
       }

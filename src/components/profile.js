@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import "../profile.css";
 import axios from 'axios';
 import { Button, Modal, ModalBody } from 'react-bootstrap';
+import config from './config.js';
 import ChangeProfileImage from './changeImage.js';
 
 function deleteToken() {
@@ -18,7 +19,7 @@ function deleteEvent(eventId, navigate, setUser, event) {
     return;
   }
 
-  axios.delete(`http://localhost:8080/event/delete/${eventId}`, {
+  axios.delete(`${config.Url}event/delete/${eventId}`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -51,7 +52,7 @@ export default function Profile() {
       return;
     }
 
-    axios.get('http://localhost:8080/user', {
+    axios.get(`${config.Url}/user`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -89,7 +90,7 @@ export default function Profile() {
           </svg>
         </Link>
         <h2>Perfil del usuario</h2>
-        <img src={user.profileImage ? "http://localhost:8080" + user.profileImage : "profileImages/default-profile.png"} className='profileImage' alt='foto de perfil' onClick={() => setChangeImageModal(true)}/>
+        <img src={user.profileImage ? config.Url + user.profileImage : "profileImages/default-profile.png"} className='profileImage' alt='foto de perfil' onClick={() => setChangeImageModal(true)}/>
         <Modal show={changeImageModal} 
         onHide={() => setChangeImageModal(false)} >
           <Modal.Header closeButton>
