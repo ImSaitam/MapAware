@@ -4,6 +4,7 @@ import {
   Popup,
   TileLayer,
   ZoomControl,
+  useMapEvent,
 } from "react-leaflet";
 import { Icon } from "leaflet";
 import { useState, useRef, useEffect, useCallback } from "react";
@@ -26,9 +27,11 @@ export default function Map() {
   const [position, setPosition] = useState(null);
   const [showIncidentModal, setShowIncidentModal] = useState(false);
   const [events, setEvents] = useState([]);
+  // Estado para mostrar la vista previa de la subida de imagen
   const mapRef = useRef();
+
   const navigate = useNavigate();
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
   const [checkboxes, setCheckboxes] = useState([
     { id: 1, label: "Accidente", checked: true },
     { id: 2, label: "Obras", checked: true },
@@ -69,7 +72,7 @@ export default function Map() {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("API response:", response.data);
+      console.log("API response:", response.data); // Debug log for API response
       if (Array.isArray(response.data)) {
         setEvents(response.data);
       } else {
@@ -87,6 +90,7 @@ export default function Map() {
     fetchEvents();
   }, [fetchEvents, checkboxes]);
 
+  // Icono para los marcadores
   const incidentIcons = {
     Accidente: {
       iconUrl: markerAccidente,
@@ -140,6 +144,14 @@ export default function Map() {
 
   return (
     <div className="map-container">
+      {/* Botón para ubicación actual */}
+      <button onClick={handleLocate} className="locate-button">
+        <img
+          src="https://cdn-icons-png.flaticon.com/512/60/60523.png"
+          className="location-icon"
+          alt=""
+        ></img>
+      </button>
       {/* Botón para abrir el modal */}
       <Link
         style={{
@@ -158,25 +170,14 @@ export default function Map() {
           alt=""
         ></img>
       </Link>
-      <div className={`buttons-container ${isDropdownOpen ? "moved-up" : ""}`}>
-        <button onClick={handleLocate} className="locate-button">
-          <img
-            src="https://cdn-icons-png.flaticon.com/512/60/60523.png"
-            className="location-icon"
-            alt=""
-          ></img>
-        </button>
-        <button
-          className="button-add"
-          onClick={() => setShowIncidentModal(true)}
-        >
-          <img
-            src="https://pixsector.com/cache/c5433603/av741f3e5fd1c88304cf8.png"
-            className="add-icon"
-            alt=""
-          ></img>
-        </button>
-      </div>
+
+      <button className="button-add" onClick={() => setShowIncidentModal(true)}>
+        <img
+          src="https://pixsector.com/cache/c5433603/av741f3e5fd1c88304cf8.png"
+          className="add-icon"
+          alt=""
+        ></img>
+      </button>
       <div className="dropupFilter">
         <Dropdown drop="up" as={ButtonGroup} show={isDropdownOpen}>
           <Dropdown.Toggle variant="success" onClick={toggleDropdown}>
@@ -223,6 +224,7 @@ export default function Map() {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
+        {/* Marcadores de eventos */}
         {Array.isArray(events) &&
           events.map((event, index) => (
             <Marker
@@ -246,6 +248,7 @@ export default function Map() {
         <LocateMarker position={position} />
         <ZoomControl className="zoomControl" position="topleft" />
         <LeafletgeoSearch className="leaflet-geosearch" />
+        <UpdateBounds />
       </MapContainer>
     </div>
   );

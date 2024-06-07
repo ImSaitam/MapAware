@@ -13,6 +13,7 @@ export default function Register() {
     birthdate: "",
     email: "",
     password: "",
+    profileImage: [null]
   });
 
   const navigate = useNavigate();
