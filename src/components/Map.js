@@ -27,11 +27,11 @@ export default function Map() {
   const [position, setPosition] = useState(null);
   const [showIncidentModal, setShowIncidentModal] = useState(false);
   const [events, setEvents] = useState([]);
-  // Estado para mostrar la vista previa de la subida de imagen
   const mapRef = useRef();
-
   const navigate = useNavigate();
-
+  const [filteredEvents, setFilteredEvents] = useState([]);
+  const [mapBounds, setMapBounds] = useState(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [checkboxes, setCheckboxes] = useState([
     { id: 1, label: "Accidente", checked: true },
     { id: 2, label: "Obras", checked: true },
@@ -54,10 +54,12 @@ export default function Map() {
   const fetchEvents = useCallback(async () => {
     const token = localStorage.getItem("token");
     if (!token || token === undefined) {
+      navigate("/login"); // Redirect to login if no token
       navigate("/login");
     }
 
     try {
+      // Construir la URL con los parámetros de filtro
       const selectedCategories = checkboxes
         .filter((checkbox) => checkbox.checked)
         .map(
@@ -65,7 +67,6 @@ export default function Map() {
             `cat=${encodeURIComponent(checkbox.label.toLowerCase())}`
         )
         .join("&");
-
       const url = `http://localhost:8080/event/filtered?${selectedCategories}`;
       const response = await axios.get(url, {
         headers: {
@@ -73,6 +74,9 @@ export default function Map() {
         },
       });
       console.log("API response:", response.data); // Debug log for API response
+      const eventsData = response.data;
+      setEvents(eventsData);
+      console.log("API response:", response.data);
       if (Array.isArray(response.data)) {
         setEvents(response.data);
       } else {
@@ -81,16 +85,39 @@ export default function Map() {
     } catch (error) {
       console.error("Error fetching events:", error);
       if (error.response && error.response.status === 401) {
+        // Token is invalid or expired, redirect to login
         navigate("/login");
       }
     }
   }, [navigate, checkboxes]);
 
+    // Icono para los marcadores
+    useEffect(() => {
+      if (mapBounds) {
+        const bounds = mapBounds;
+        const filtered = events.filter(
+          (event) =>
+            event.latitude >= bounds._southWest.lat &&
+            event.latitude <= bounds._northEast.lat &&
+            event.longitude >= bounds._southWest.lng &&
+            event.longitude <= bounds._northEast.lng
+        );
+        setFilteredEvents(filtered);
+      }
+    }, [mapBounds, events]);
+  
+    // Custom hook para actualizar bounds según movimiento del mapa.
+    function UpdateBounds() {
+      const map = useMapEvent("moveend", () => {
+        setMapBounds(map.getBounds());
+      });
+      return null;
+    }
+  
   useEffect(() => {
     fetchEvents();
   }, [fetchEvents, checkboxes]);
 
-  // Icono para los marcadores
   const incidentIcons = {
     Accidente: {
       iconUrl: markerAccidente,
@@ -144,14 +171,6 @@ export default function Map() {
 
   return (
     <div className="map-container">
-      {/* Botón para ubicación actual */}
-      <button onClick={handleLocate} className="locate-button">
-        <img
-          src="https://cdn-icons-png.flaticon.com/512/60/60523.png"
-          className="location-icon"
-          alt=""
-        ></img>
-      </button>
       {/* Botón para abrir el modal */}
       <Link
         style={{
@@ -170,14 +189,25 @@ export default function Map() {
           alt=""
         ></img>
       </Link>
-
-      <button className="button-add" onClick={() => setShowIncidentModal(true)}>
-        <img
-          src="https://pixsector.com/cache/c5433603/av741f3e5fd1c88304cf8.png"
-          className="add-icon"
-          alt=""
-        ></img>
-      </button>
+      <div className={`buttons-container ${isDropdownOpen ? "moved-up" : ""}`}>
+        <button onClick={handleLocate} className="locate-button">
+          <img
+            src="https://cdn-icons-png.flaticon.com/512/60/60523.png"
+            className="location-icon"
+            alt=""
+          ></img>
+        </button>
+        <button
+          className="button-add"
+          onClick={() => setShowIncidentModal(true)}
+        >
+          <img
+            src="https://pixsector.com/cache/c5433603/av741f3e5fd1c88304cf8.png"
+            className="add-icon"
+            alt=""
+          ></img>
+        </button>
+      </div>
       <div className="dropupFilter">
         <Dropdown drop="up" as={ButtonGroup} show={isDropdownOpen}>
           <Dropdown.Toggle variant="success" onClick={toggleDropdown}>
@@ -224,9 +254,8 @@ export default function Map() {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        {/* Marcadores de eventos */}
-        {Array.isArray(events) &&
-          events.map((event, index) => (
+        {Array.isArray(filteredEvents) &&
+          filteredEvents.map((event, index) => (
             <Marker
               key={index}
               position={[event.latitude, event.longitude]}
