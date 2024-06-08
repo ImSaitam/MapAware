@@ -47,18 +47,17 @@
 
   .user-button {
     position: absolute;
-    top: 10px;
     background-color: transparent;
     border-style: none;
-    right: 5px;
     z-index: 1000;
   }
 
   .user-icon {
     cursor: pointer;
-    height: 2.5em;
+    height: 3.5em;
     background-color: white;
     border-radius: 50%;
+    border: 2px solid black;
   }
   
   .add-icon {

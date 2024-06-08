@@ -5,7 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "../loginMovil.css";
 import { Link, useNavigate } from "react-router-dom";
 import logoImage from "../images/mapaware-logo.png";
-import config from "./config.js";
+import {config} from "./config.js";
 
 export function LoginFormMovil() {
   const [formData, setFormData] = useState({
@@ -21,7 +21,7 @@ export function LoginFormMovil() {
 
     try {
       const response = await axios.post(
-        `${config.Url}/auth/login`,
+        `${config}/auth/login`,
         formData
       );
       console.log(response.data);

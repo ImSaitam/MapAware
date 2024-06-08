@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { Form } from "react-bootstrap";
-import config from "./config.js";
+import {config} from "./config.js";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../registerMovil.css";
 import { useNavigate, Link } from "react-router-dom";
@@ -27,7 +27,7 @@ export default function RegisterMovil() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post(`${config.Url}/auth/register`, formData);
+      const response = await axios.post(`${config}/auth/register`, formData);
       console.log(response);
       localStorage.setItem('token', response.data.token);
       navigate("/");

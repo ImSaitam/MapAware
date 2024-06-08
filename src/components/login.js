@@ -4,7 +4,7 @@ import { Form } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../login.css";
 import { Link, useNavigate } from "react-router-dom";
-import config from "./config.js";
+import {config} from "./config.js";
 
 export function LoginForm() {
   const [formData, setFormData] = useState({
@@ -20,7 +20,7 @@ const handleSubmit = async (event) => {
 
   try {
     const response = await axios.post(
-      `${config.Url}/auth/login`,
+      `${config}/auth/login`,
       formData
     );
     console.log(response.data);

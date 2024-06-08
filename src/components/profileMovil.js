@@ -4,7 +4,7 @@ import axios from 'axios';
 import "../profileMovil.css";  // Importar el CSS específico para móviles
 import { Pagination } from 'react-bootstrap'; // Importar el componente de paginación de Bootstrap
 import { Modal } from 'react-bootstrap';
-import config from './config.js';
+import {config} from './config.js';
 import ChangeProfileImage from './changeImage.js';
 
 function deleteToken() {
@@ -20,7 +20,7 @@ function deleteEvent(eventId, navigate, setUser, event) {
     return;
   }
 
-  axios.delete(`${config.Url}/event/delete/${eventId}`, {
+  axios.delete(`${config}/event/delete/${eventId}`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -101,7 +101,7 @@ export default function ProfileMovil() {
           </svg>
         </Link>
         <br></br>      
-        <img src={user.profileImage ? "http://localhost:8080" + user.profileImage : "profileImages/default-profile.png"} className='profileImage' alt='foto de perfil' onClick={() => setChangeImageModal(true)}/>
+        <img src={user.profileImage ? config + user.profileImage : "profileImages/default-profile.png"} className='profileImage' alt='foto de perfil' onClick={() => setChangeImageModal(true)}/>
         <h2>Perfil del usuario</h2>
         <Modal show={changeImageModal} 
         onHide={() => setChangeImageModal(false)} >

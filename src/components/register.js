@@ -4,7 +4,7 @@ import { Form } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../register.css";
 import { useNavigate, Link } from "react-router-dom";
-import config from "./config.js";
+import {config} from "./config.js";
 
 export default function Register() {
   const [formData, setFormData] = useState({
@@ -30,7 +30,7 @@ export default function Register() {
     event.preventDefault();
 
     try {
-      const response = await axios.post(`${config.Url}/auth/register`, formData);
+      const response = await axios.post(`${config}/auth/register`, formData);
       console.log(response);
       localStorage.setItem('token', response.data.token);
       navigate("/")

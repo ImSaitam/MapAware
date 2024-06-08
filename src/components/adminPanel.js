@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import "../adminPanel.css";
 import axios from 'axios';
 import { Button } from 'react-bootstrap';
-import config from './config.js';
+import {config} from './config.js';
 
 function deleteEvent(eventId, navigate, setUser, event) {
   const token = localStorage.getItem('token');
@@ -13,7 +13,7 @@ function deleteEvent(eventId, navigate, setUser, event) {
     return;
   }
 
-  axios.delete(`${config.Url}/event/delete/${eventId}`, {
+  axios.delete(`${config}/event/delete/${eventId}`, {
     headers: {
       Authorization: `Bearer ${token}`
     }

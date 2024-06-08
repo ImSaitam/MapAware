@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.6.8",
     "bootstrap": "^5.3.3",
+    "dotenv": "^16.4.5",
     "leaflet": "^1.9.4",
     "leaflet-geosearch": "^3.11.1",
     "leaflet-search": "^4.0.0",
@@ -25,6 +26,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "build:pro": "bash -ac '. .env; react-scripts build'",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

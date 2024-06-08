@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState, useRef } from "react";
 import { Form } from "react-bootstrap";
+import { config } from "./config.js"
 import AvatarEditor from "react-avatar-editor";
 
 export default function ChangeProfileImage({ onChangeImage, setChangeImageModal }) {
@@ -19,15 +20,15 @@ export default function ChangeProfileImage({ onChangeImage, setChangeImageModal 
                 formData.append("image", blob, "avatar.png");  // Agrega el blob de la imagen al FormData
 
                 try {
-                    const response = await axios.put("http://localhost:8080/user/image", formData, {
+                    const response = await axios.put(`${config}/user/image`, formData, {
                         headers: {
                             "Content-Type": "multipart/form-data",  // Establece el encabezado Content-Type
                             Authorization: `Bearer ${token}`,
                         },
                     });
-
                     console.log("Foto cambiada.", response);
                     onChangeImage();
+                    window.location.reload();
                 } catch (error) {
                     console.log("Hubo un error al cambiar la foto de perfil.", error);
                 }

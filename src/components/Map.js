@@ -4,7 +4,6 @@ import {
   Popup,
   TileLayer,
   ZoomControl,
-  useMapEvent,
 } from "react-leaflet";
 import { Icon } from "leaflet";
 import { useState, useRef, useEffect, useCallback } from "react";
@@ -17,7 +16,7 @@ import { AddIncident } from "./forms.js";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import { Dropdown, ButtonGroup, Form } from "react-bootstrap";
-import config from "./config.js";
+import { config } from "./config.js";
 import markerAccidente from "../images/marker-accidente.svg";
 import markerObras from "../images/marker-obra.svg";
 import markerManifestacion from "../images/marker-manifestacion.svg";
@@ -30,9 +29,8 @@ export default function Map() {
   const [events, setEvents] = useState([]);
   const mapRef = useRef();
   const navigate = useNavigate();
-  const [filteredEvents, setFilteredEvents] = useState([]);
-  const [mapBounds, setMapBounds] = useState(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [profilePicture, setProfilePicture] = useState(null);
   const [checkboxes, setCheckboxes] = useState([
     { id: 1, label: "Accidente", checked: true },
     { id: 2, label: "Obras", checked: true },
@@ -52,11 +50,27 @@ export default function Map() {
     );
   };
 
+  useEffect(() => {
+    const fetchUserProfilePicture = async () => {
+      try {
+        const response = await axios.get(`${config}/user/get-image`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          }
+        });
+        console.log(response); // Debug the response
+        setProfilePicture(response.data); // Update the profile picture state
+      } catch (error) {
+        console.error('Error fetching profile picture:', error);
+      }
+    };
+    fetchUserProfilePicture();
+  }, []);
+
   const fetchEvents = useCallback(async () => {
     const token = localStorage.getItem("token");
     if (!token || token === undefined) {
       navigate("/login"); // Redirect to login if no token
-      navigate("/login");
     }
 
     try {
@@ -68,7 +82,7 @@ export default function Map() {
             `cat=${encodeURIComponent(checkbox.label.toLowerCase())}`
         )
         .join("&");
-      const url = `${config.Url}/event/filtered?${selectedCategories}`;
+      const url = `${config}/event/filtered?${selectedCategories}`;
       const response = await axios.get(url, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -91,29 +105,8 @@ export default function Map() {
       }
     }
   }, [navigate, checkboxes]);
-
-    // Icono para los marcadores
-    useEffect(() => {
-      if (mapBounds) {
-        const bounds = mapBounds;
-        const filtered = events.filter(
-          (event) =>
-            event.latitude >= bounds._southWest.lat &&
-            event.latitude <= bounds._northEast.lat &&
-            event.longitude >= bounds._southWest.lng &&
-            event.longitude <= bounds._northEast.lng
-        );
-        setFilteredEvents(filtered);
-      }
-    }, [mapBounds, events]);
   
     // Custom hook para actualizar bounds según movimiento del mapa.
-    function UpdateBounds() {
-      const map = useMapEvent("moveend", () => {
-        setMapBounds(map.getBounds());
-      });
-      return null;
-    }
   
   useEffect(() => {
     fetchEvents();
@@ -185,7 +178,7 @@ export default function Map() {
         to={"/profile"}
       >
         <img
-          src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png"
+          src={config + profilePicture}
           className="user-icon"
           alt=""
         ></img>
@@ -193,7 +186,7 @@ export default function Map() {
       <div className={`buttons-container ${isDropdownOpen ? "moved-up" : ""}`}>
         <button onClick={handleLocate} className="locate-button">
           <img
-            src="https://cdn-icons-png.flaticon.com/512/60/60523.png"
+            src={"https://cdn-icons-png.flaticon.com/512/60/60523.png"}
             className="location-icon"
             alt=""
           ></img>
@@ -255,8 +248,8 @@ export default function Map() {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        {Array.isArray(filteredEvents) &&
-          filteredEvents.map((event, index) => (
+        {Array.isArray(events) &&
+          events.map((event, index) => (
             <Marker
               key={index}
               position={[event.latitude, event.longitude]}
@@ -278,7 +271,6 @@ export default function Map() {
         <LocateMarker position={position} />
         <ZoomControl className="zoomControl" position="topleft" />
         <LeafletgeoSearch className="leaflet-geosearch" />
-        <UpdateBounds />
       </MapContainer>
     </div>
   );
