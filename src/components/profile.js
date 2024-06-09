@@ -19,7 +19,7 @@ function deleteEvent(eventId, navigate, setUser, event) {
     return;
   }
 
-  axios.delete(`${config}event/delete/${eventId}`, {
+  axios.delete(`${config}/event/delete/${eventId}`, {
     headers: {
       Authorization: `Bearer ${token}`
     }

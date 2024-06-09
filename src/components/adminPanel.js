@@ -50,7 +50,7 @@ export default function AdminPanel() {
     }
 
     try {
-      const response = await axios.get(`${config.Url}user`, {
+      const response = await axios.get(`${config}/user`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -78,7 +78,7 @@ export default function AdminPanel() {
       return;
     }
   
-    axios.get(`${config.Url}event/all-pag?pag=${page}&cant=5`, {
+    axios.get(`${config}/event/all-pag?pag=${page}&cant=5`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
