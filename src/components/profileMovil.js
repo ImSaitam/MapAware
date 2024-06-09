@@ -55,7 +55,7 @@ export default function ProfileMovil() {
       return;
     }
 
-    axios.get(`${config.Url}/user`, {
+    axios.get(`${config}/user`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
