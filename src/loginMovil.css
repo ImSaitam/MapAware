@@ -71,14 +71,14 @@
 }
 
 @media (max-width: 375px) { /* Media query para iPhone SE */
-  .btn-primary{
+  .new-btn-primary{
     position: absolute;
     bottom: 1%;
     left: 50%;
     transform: translateX(-50%);
     width: 95%;
   }
-  .btn-secondary {
+  .new-btn-secondary {
     position: absolute;
     bottom: 8%;
     left: 50%;
