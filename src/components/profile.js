@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import "../profile.css";
 import axios from 'axios';
-import { Button, Modal, ModalBody } from 'react-bootstrap';
+import { Button, Modal } from 'react-bootstrap';
 import {config} from './config.js';
 import ChangeProfileImage from './changeImage.js';
 

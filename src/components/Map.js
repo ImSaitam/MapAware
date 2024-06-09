@@ -72,7 +72,6 @@ export default function Map() {
     if (!token || token === undefined) {
       navigate("/login"); // Redirect to login if no token
     }
-
     try {
       // Construir la URL con los parámetros de filtro
       const selectedCategories = checkboxes
@@ -178,7 +177,7 @@ export default function Map() {
         to={"/profile"}
       >
         <img
-          src={config + profilePicture}
+          src={profilePicture ? config + profilePicture : "profileImages/default-profile.png"}
           className="user-icon"
           alt=""
         ></img>
