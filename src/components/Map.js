@@ -257,7 +257,7 @@ export default function Map() {
               <Popup>
                 <p>
                   Añadido por{" "}
-                  <Link to={`/user/${event.user.username}`}>
+                  <Link to={`/user/details/${event.user.username}`}>
                     {event.user.username}
                   </Link>
                 </p>

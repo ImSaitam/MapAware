@@ -1,0 +1,118 @@
+.container-details {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  color: #333;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container-details .container {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 80%;
+  max-width: 800px;
+  padding: 20px;
+  margin: 20px;
+}
+
+.container-details .iconImage {
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+}
+
+.container-details h2 {
+  text-align: center;
+  color: #007bff;
+}
+
+.container-details p {
+  font-size: 16px;
+  margin: 10px 0;
+}
+
+.container-details ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.container-details li {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin: 10px 0;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.container-details .event-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+.container-details .event-header span {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-right: 10px;
+}
+
+.container-details .deleteButton {
+  position: absolute;
+  right: calc(5% + 20px); /* Ajusta la posición hacia la izquierda */
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+.container-details .trashButton {
+  position: absolute;
+  right: calc(10% + 20px); /* Ajusta la posición hacia la izquierda */
+  display: none;
+}
+
+.profileImage {
+  height: 15vh;
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+  border-radius: 50%;
+}
+
+.container-details .toggleButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-left: 10px;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.container-details .toggleButton:focus {
+  outline: none;
+}
+
+.container-details .event-details {
+  display: none;
+  margin-top: 10px;
+}
+.container-details .event-details.expanded {
+  display: block;
+}
+@media (max-width: 768px) {
+  .container-details .event-description{
+    display: none;
+  }
+}

@@ -88,11 +88,11 @@
   }
 
   .buttons-container.moved-up .locate-button {
-    bottom: 22.5vh; /* Ajustar según sea necesario */
+    bottom: 31.5vh; /* Ajustar según sea necesario */
   }
   
   .buttons-container.moved-up .button-add {
-    bottom: 26.8vh; /* Ajustar según sea necesario */
+    bottom: 37.2vh; /* Ajustar según sea necesario */
   }
 
   @media (max-width: 1000px) {

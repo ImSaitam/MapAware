@@ -81,7 +81,7 @@
   }
 
   .profileImage {
-    height: 90px;
+    height: 15vh;
     display: flex;
     justify-content: center;
     margin: 0 auto;

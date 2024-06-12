@@ -9,10 +9,10 @@ import ProfileMovil from './components/profileMovil.js';
 import RegisterMovil from './components/registerMovil.js';
 import { LoginFormMovil } from './components/loginMovil.js';
 import AdminPanelMovil from './components/adminPanelMovil.js';
+import UserDetails from './components/userDetails.js';
 
 
 export default function App() {
-  
     return (
         <BrowserRouter>
             <Routes>
@@ -20,6 +20,7 @@ export default function App() {
               <Route path="/login" element={<LoginForm />} />
               <Route path="/register" element={<Register />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path="/user/details/:username" element={<UserDetails />} />
               <Route path="/admin" element={<AdminPanel />} />
               <Route path="/ProfileMovil" element={<ProfileMovil />} />
               <Route path="/RegisterMovil" element={<RegisterMovil />} />
