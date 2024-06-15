@@ -87,8 +87,16 @@
     margin: 0 auto;
     cursor: pointer;
     border-radius: 50%;
+    transition: filter 0.5s;
   }
-  
+
+  .profileImage:hover {
+    filter: brightness(0.7); /* Oscurecemos la imagen al pasar el mouse */
+    background-image: url('images/edit.svg'); /* Agregamos la imagen de la cámara de fotos */
+    background-position: center; /* Centramos la imagen de la cámara */
+    background-repeat: no-repeat; /* Evitamos que se repita la imagen */
+  }
+
   .profile-container .toggleButton {
     background: none;
     border: none;

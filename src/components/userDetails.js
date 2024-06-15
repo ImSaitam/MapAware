@@ -52,7 +52,7 @@ const UserDetails = () => {
               <li key={index}>
                 <div className="event-header">
                   <span>{event.category}</span>
-                  <span className="event-description">{event.description.length > 30 ? `${event.description.slice(0, 20)}...` : event.description}</span>
+                  <span className="event-description">{event.description.length > 40 ? `${event.description.slice(0, 40)}...` : event.description}</span>
                   
                   <button className='toggleButton' onClick={() => toggleEventDetails(event.id)}>
                     {isExpanded ? '▲' : '▼'}

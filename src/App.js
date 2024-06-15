@@ -11,7 +11,6 @@ import { LoginFormMovil } from './components/loginMovil.js';
 import AdminPanelMovil from './components/adminPanelMovil.js';
 import UserDetails from './components/userDetails.js';
 
-
 export default function App() {
     return (
         <BrowserRouter>

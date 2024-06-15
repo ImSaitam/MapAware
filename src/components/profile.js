@@ -90,7 +90,7 @@ export default function Profile() {
           </svg>
         </Link>
         <h2>Perfil del usuario</h2>
-        <img src={user.profileImage ? config + user.profileImage : "profileImages/default-profile.png"} className='profileImage' alt='foto de perfil' onClick={() => setChangeImageModal(true)}/>
+          <img src={user.profileImage ? config + user.profileImage : "profileImages/default-profile.png"} className='profileImage' alt='foto de perfil' onClick={() => setChangeImageModal(true)}/>
         <Modal show={changeImageModal} 
         onHide={() => setChangeImageModal(false)} >
           <Modal.Header closeButton>
@@ -117,7 +117,7 @@ export default function Profile() {
               <li key={index}>
                 <div className="event-header">
                   <span>{event.category}</span>
-                  <span className="event-description">{event.description.length > 30 ? `${event.description.slice(0, 20)}...` : event.description}</span>
+                  <span className="event-description">{event.description.length > 20 ? `${event.description.slice(0, 20)}...` : event.description}</span>
                   <Button variant="outline-none" className='trashButton' onClick={() => deleteEvent(event.id, navigate, setUser, event)}>🗑️</Button>
                   <Button variant="outline-warning" className='deleteButton' onClick={() => deleteEvent(event.id, navigate, setUser, event)}>Borrar evento</Button>
                   
