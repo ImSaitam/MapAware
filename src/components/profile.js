@@ -5,10 +5,20 @@ import axios from 'axios';
 import { Button, Modal } from 'react-bootstrap';
 import {config} from './config.js';
 import ChangeProfileImage from './changeImage.js';
+import editLogo from '../images/edit.svg';
 
 function deleteToken() {
   localStorage.removeItem('token');
   alert("Sesion cerrada con exito.");
+}
+
+function deletePicture() {
+  const token = localStorage.getItem('token');
+  axios.delete(`${config}/user/image`, {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  })
 }
 
 function deleteEvent(eventId, navigate, setUser, event) {
@@ -90,7 +100,11 @@ export default function Profile() {
           </svg>
         </Link>
         <h2>Perfil del usuario</h2>
+        <div className='image-container'>
           <img src={user.profileImage ? config + user.profileImage : "profileImages/default-profile.png"} className='profileImage' alt='foto de perfil' onClick={() => setChangeImageModal(true)}/>
+          <img src={editLogo} className='editLogo' alt=''/>
+          <Button onClick={deletePicture} className='btn btn-danger'>Borrar foto</Button>
+        </div>
         <Modal show={changeImageModal} 
         onHide={() => setChangeImageModal(false)} >
           <Modal.Header closeButton>
@@ -119,7 +133,7 @@ export default function Profile() {
                   <span>{event.category}</span>
                   <span className="event-description">{event.description.length > 20 ? `${event.description.slice(0, 20)}...` : event.description}</span>
                   <Button variant="outline-none" className='trashButton' onClick={() => deleteEvent(event.id, navigate, setUser, event)}>🗑️</Button>
-                  <Button variant="outline-warning" className='deleteButton' onClick={() => deleteEvent(event.id, navigate, setUser, event)}>Borrar evento</Button>
+                  <Button variant="outline-danger" className='deleteButton' onClick={() => deleteEvent(event.id, navigate, setUser, event)}>Borrar evento</Button>
                   
                   <button className='toggleButton' onClick={() => toggleEventDetails(event.id)}>
                     {isExpanded ? '▲' : '▼'}
@@ -134,7 +148,7 @@ export default function Profile() {
             )
           })}
         </ul>
-        <button className="btn btn-outline-danger logout-button-" onClick={() => { deleteToken(); window.location.href = "/"; }}>Cerrar sesión</button>
+        <button className="btn btn-danger logout-button-" onClick={() => { deleteToken(); window.location.href = "/"; }}>Cerrar sesión</button>
       </div>
     </div>
   )

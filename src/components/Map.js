@@ -4,6 +4,7 @@ import {
   Popup,
   TileLayer,
   ZoomControl,
+  ScaleControl,
 } from "react-leaflet";
 import { Icon } from "leaflet";
 import { useState, useRef, useEffect, useCallback } from "react";
@@ -242,6 +243,7 @@ export default function Map() {
         zoomControl={false}
         minZoom={4}
         maxBounds={bounds}
+        
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -270,6 +272,7 @@ export default function Map() {
         <LocateMarker position={position} />
         <ZoomControl className="zoomControl" position="topleft" />
         <LeafletgeoSearch className="leaflet-geosearch" />
+        <ScaleControl position="bottomleft"/>
       </MapContainer>
     </div>
   );
