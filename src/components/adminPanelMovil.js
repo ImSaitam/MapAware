@@ -1,3 +1,4 @@
+/* eslint-disable no-lone-blocks */
 import { useEffect, useState, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import "../adminPanelMovil.css";
@@ -20,10 +21,10 @@ function deleteEvent(eventId, navigate, setUser, event) {
           events: prevUser.events.filter(eventToDelete => eventToDelete.id !== eventId)
         }
       });
-      console.log("Evento borrado con éxito.");
+      {/* console.log("Evento borrado con éxito."); */}
     })
     .catch(error => {
-      console.error("Error al borrar el evento:", error);
+      {/* console.error("Error al borrar el evento:", error); */}
     });
 }
 
@@ -56,7 +57,7 @@ export default function AdminPanelMovil() {
         navigate('/');
       }
     } catch (error) {
-      console.error("Error fetching user:", error);
+      {/* console.error("Error fetching user:", error); */}
       navigate('/');
     }
   }, [navigate]);
@@ -88,7 +89,7 @@ export default function AdminPanelMovil() {
         });
       })
      .catch(error => {
-        console.error("Error fetching events:", error);
+        {/* console.error("Error fetching events:", error); */}
       });
   }, [page, navigate]);
 

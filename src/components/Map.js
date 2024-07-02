@@ -1,3 +1,4 @@
+/* eslint-disable no-lone-blocks */
 import {
   MapContainer,
   Marker,
@@ -59,10 +60,10 @@ export default function Map() {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           }
         });
-        console.log(response); // Debug the response
+        {/* console.log(response); */} // Debug the response
         setProfilePicture(response.data); // Update the profile picture state
       } catch (error) {
-        console.error('Error fetching profile picture:', error);
+        {/*console.error('Error fetching profile picture:', error); */}
       }
     };
     fetchUserProfilePicture();
@@ -88,17 +89,19 @@ export default function Map() {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("API response:", response.data); // Debug log for API response
+      {/* console.log("API response:", response.data); */} // Debug log for API response
       const eventsData = response.data;
       setEvents(eventsData);
-      console.log("API response:", response.data);
+      {/* console.log("API response:", response.data); */}
       if (Array.isArray(response.data)) {
         setEvents(response.data);
       } else {
         console.error("Expected an array of events, but got:", response.data);
       }
     } catch (error) {
-      console.error("Error fetching events:", error);
+      {/* console.error("Error fetching events:", error); */}
+      localStorage.removeItem('token');
+      navigate("/login")
       if (error.response && error.response.status === 401) {
         // Token is invalid or expired, redirect to login
         navigate("/login");

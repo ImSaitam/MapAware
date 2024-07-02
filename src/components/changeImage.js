@@ -1,8 +1,20 @@
+/* eslint-disable no-lone-blocks */
 import axios from "axios";
 import { useState, useRef } from "react";
 import { Form } from "react-bootstrap";
 import { config } from "./config.js"
 import AvatarEditor from "react-avatar-editor";
+import { Button } from "react-bootstrap";
+
+function deletePicture() {
+    const token = localStorage.getItem('token');
+    axios.delete(`${config}/user/image`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
+    window.location.reload();
+  }
 
 export default function ChangeProfileImage({ onChangeImage, setChangeImageModal }) {
     const token = localStorage.getItem("token");
@@ -26,11 +38,11 @@ export default function ChangeProfileImage({ onChangeImage, setChangeImageModal 
                             Authorization: `Bearer ${token}`,
                         },
                     });
-                    console.log("Foto cambiada.", response);
+                    {/* console.log("Foto cambiada.", response); */}
                     onChangeImage();
                     window.location.reload();
                 } catch (error) {
-                    console.log("Hubo un error al cambiar la foto de perfil.", error);
+                    { /* console.log("Hubo un error al cambiar la foto de perfil.", error); */}
                 }
             }, "image/png");
         }
@@ -66,6 +78,7 @@ export default function ChangeProfileImage({ onChangeImage, setChangeImageModal 
             >
                 Aceptar
             </button>
+            <Button onClick={deletePicture} className='deletePicture btn btn-danger'>Borrar foto</Button>
         </Form>
     );
 }

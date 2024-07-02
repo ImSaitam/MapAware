@@ -1,3 +1,4 @@
+/* eslint-disable no-lone-blocks */
 import { useEffect, useState, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import "../adminPanel.css";
@@ -27,9 +28,9 @@ function deleteEvent(eventId, navigate, setUser, event) {
       });
     })
     .catch(error => {
-      console.error("Error deleting event:", error);
+      {/* console.error("Error deleting event:", error); */}
     });
-  console.log("Evento borrado con exito.");
+  {/* console.log("Evento borrado con exito."); */}
 }
 
 export default function AdminPanel() {
@@ -61,7 +62,7 @@ export default function AdminPanel() {
         navigate('/');
       }
     } catch (error) {
-      console.error("Error fetching user:", error);
+      {/* console.error("Error fetching user:", error); */}
       navigate('/');
     }
   }, [navigate]);
@@ -93,7 +94,7 @@ export default function AdminPanel() {
         });
       })
      .catch(error => {
-        console.error("Error fetching events:", error);
+        {/* console.error("Error fetching events:", error); */}
       });
   }, [page, navigate]);
 

@@ -9,16 +9,6 @@ import editLogo from '../images/edit.svg';
 
 function deleteToken() {
   localStorage.removeItem('token');
-  alert("Sesion cerrada con exito.");
-}
-
-function deletePicture() {
-  const token = localStorage.getItem('token');
-  axios.delete(`${config}/user/image`, {
-    headers: {
-      'Authorization': `Bearer ${token}`
-    }
-  })
 }
 
 function deleteEvent(eventId, navigate, setUser, event) {
@@ -45,7 +35,6 @@ function deleteEvent(eventId, navigate, setUser, event) {
     .catch(error => {
       // Maneja el error
     });
-  console.log("Evento borrado con exito.");
 }
 
 export default function Profile() {
@@ -103,7 +92,6 @@ export default function Profile() {
         <div className='image-container'>
           <img src={user.profileImage ? config + user.profileImage : "profileImages/default-profile.png"} className='profileImage' alt='foto de perfil' onClick={() => setChangeImageModal(true)}/>
           <img src={editLogo} className='editLogo' alt=''/>
-          <Button onClick={deletePicture} className='btn btn-danger'>Borrar foto</Button>
         </div>
         <Modal show={changeImageModal} 
         onHide={() => setChangeImageModal(false)} >

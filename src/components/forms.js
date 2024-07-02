@@ -1,3 +1,4 @@
+/* eslint-disable no-lone-blocks */
 import { useState, useRef, useEffect } from "react";
 import { Form } from "react-bootstrap";
 import {
@@ -55,19 +56,19 @@ export function AddIncident({ onEventAdded, setShowIncidentModal }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Submitting event:", event); // Debug log
+    {/* console.log("Submitting event:", event); */} // Debug log
 
     try {
-      const response = await axios.post(`${config}/event`, event, {
+      await axios.post(`${config}/event`, event, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      console.log("Incident added:", response.data);
+      {/* console.log("Incident added:", response.data); */}
       onEventAdded(); // Llama la función callback después de añadir un evento
     } catch (error) {
-      console.error("There was an error adding the incident!", error);
+      {/* console.error("There was an error adding the incident!", error); */}
     }
   };
 
@@ -79,7 +80,7 @@ export function AddIncident({ onEventAdded, setShowIncidentModal }) {
         mapRef.current.setView([latitude, longitude], 15); // Zoom al lugar de la ubicación actual
       },
       (error) => {
-        console.error("Error al obtener la ubicación:", error);
+        {/* console.error("Error al obtener la ubicación:", error); */}
       }
     );
   }, []);

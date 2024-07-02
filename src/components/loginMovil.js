@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Form } from "react-bootstrap";
+import { Form, Alert } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../loginMovil.css";
 import { Link, useNavigate } from "react-router-dom";
@@ -11,9 +11,12 @@ export function LoginFormMovil() {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
+    error: false,
   });
 
-  const [errorMessage, setErrorMessage] = useState("");
+  const [variant, setVariant] = useState("");
+  const [message, setMessage] = useState(""); // Agregamos un estado para el mensaje de éxito
+  const [showAlert, setShowAlert] = useState(false); // Agregamos un estado para mostrar el alert de éxito
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
@@ -24,20 +27,17 @@ export function LoginFormMovil() {
         `${config}/auth/login`,
         formData
       );
-      console.log(response.data);
-      alert("Login successful!");
-      localStorage.setItem("token", response.data.token);
-      navigate("/");
+      localStorage.setItem('token', response.data.token);
+      setVariant("success");
+      setMessage("¡Inicio de sesión exitoso! Redirigiendo a MapAware."); // Establecemos el mensaje de éxito
+      setShowAlert(true); // Mostramos el alert de éxito
+      setTimeout(() => {
+        navigate("/"); // Redirigimos al usuario después de 2 segundos
+      }, 2000);
     } catch (error) {
-      console.error(error.response.data);
-      if (
-        error.response.data.code === 401 ||
-        error.response.data.message.includes("password")
-      ) {
-        setErrorMessage("Contraseña incorrecta. Intente nuevamente.");
-      } else {
-        alert(error.response.data?.message || "Login failed");
-      }
+        setShowAlert(true);
+        setVariant("danger");
+        setMessage("Nombre de usuario y/o contraseña incorrecta. Intente nuevamente.");
     }
   };
 
@@ -77,6 +77,11 @@ export function LoginFormMovil() {
             }
             required
           />
+          {showAlert && (
+          <Alert variant={variant} className="alertMessage" onClose={() => setShowAlert(false)}>
+            {message}
+          </Alert>
+        )}
         </Form.Group>
         <button type="submit" className="btn new-btn-primary">
           Iniciar sesión
@@ -88,7 +93,6 @@ export function LoginFormMovil() {
         >
           Registrarse
         </Link>
-        {errorMessage && <p className="error-message">{errorMessage}</p>}
       </Form>
     </div>
   );

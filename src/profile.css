@@ -112,6 +112,10 @@
     opacity: 1;
   }
 
+  .deletePicture {
+    margin-left: 60%;
+  }
+
   .profile-container .toggleButton {
     background: none;
     border: none;

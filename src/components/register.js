@@ -16,6 +16,8 @@ export default function Register() {
     password: "",
     profileImage: [null]
   });
+  const [errorMessage, setErrorMessage] = useState("");
+  const [error, setError] = useState(false);
 
   const navigate = useNavigate();
 
@@ -37,7 +39,8 @@ export default function Register() {
       // Call the provided onRegisterSuccess callback if available
     } catch (error) {
       console.error(error);
-      alert("Error al registrar");
+      setError(true);
+      setErrorMessage("Nombre de usuario y/o correo electronico en uso.");
     }
   };
 
@@ -83,6 +86,7 @@ export default function Register() {
           <Form.Label for="exampleInputPassword1">Contraseña</Form.Label>
           <Form.Control className="form-control" type="password" onChange={(event) => setFormData({...formData, password: event.target.value})} required/>
         </Form.Group>
+        {errorMessage && <p className="error-message">{errorMessage}</p>}
         <button type="submit" className="btn btn-primary">
             Registrarse
         </button>
