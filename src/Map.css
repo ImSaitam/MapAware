@@ -1,134 +1,420 @@
 .map-container {
-    position: relative;
-  }
-  
-  .locate-button {
-    position: absolute;
-    bottom: 69px;
-    background-color: transparent;
-    border-style: none;
-    right: 5.5px;
-    z-index: 1000;
+  position: relative;
+  width: 100%;
+  height: 100vh;
+}
+
+.locate-button {
+  position: absolute;
+  bottom: 9.5%;
+  background-color: transparent;
+  border-style: none;
+  right: .7%;
+  z-index: 1000;
+}
+
+.button-add {
+  position: absolute;
+  right: .7%;
+  bottom: 16.5%;
+  z-index: 1000;
+  background-color: transparent;
+  border-style: none;
+}
+
+.dropupFilter {
+  z-index: 1000;
+  position: absolute;
+  right: 1%;
+  bottom: 3%;
+}
+
+.eventType {
+  margin-left: .5rem;
+}
+
+.location-icon {
+  background-color: white;
+  border-radius: 5px;
+  cursor: pointer; 
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+  padding: .5em;
+  height: 2.5em;
+  transition: .3s;
+}
+
+.location-icon:hover {
+  background-color: #d4d4d4;
+}
+
+.user-button {
+  position: absolute;
+  background-color: transparent;
+  border-style: none;
+  z-index: 1000;
+  right: 1%;
+  top: 1%;
+}
+
+.user-icon {
+  cursor: pointer;
+  height: 3.5em;
+  background-color: white;
+  border-radius: 50%;
+  border: 1px solid black;
+}
+
+.add-icon {
+  height: 2.5em;
+  background-color: white;
+  border-radius: 5px;
+  cursor: pointer; 
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+  transition: .3s;
+}
+
+.add-icon:hover {
+  background-color: #d4d4d4;
+}
+
+#backButton {
+  position: absolute;
+  left: 15px;
+  top: 1%;
+}
+
+#mapIncident {
+  width: 100%;
+  height: 50vh; /* Altura adaptable */
+  border-radius: 1em;
+}
+
+textarea {
+  resize: none!important;
+  width: 100%;
+  height: auto;
+}
+
+.buttons-container.moved-up .locate-button {
+  bottom: 29.5%; /* Ajustar según sea necesario */
+}
+
+.buttons-container.moved-up .button-add {
+  bottom: 36%; /* Ajustar según sea necesario */
+}
+
+@media (max-width: 1024px) {
+    .locate-button, .button-add, .dropupFilter, .user-button {
+        bottom: 8%;
+        right: 2%;
+    }
+
+    .buttons-container.moved-up .locate-button, .buttons-container.moved-up .button-add {
+        bottom: 25%;
+    }
+
+    .dropupFilter {
+        bottom: 7%;
+    }
+
+    .button-add {
+        bottom: 15%;
+    }
+}
+
+@media (max-width: 900px) {
+    body {
+        overflow: hidden;
+    }
+
+    .locate-button, .button-add, .dropupFilter, .user-button {
+        bottom: 16%;
+        right: 2%;
+    }
+
+    .buttons-container.moved-up .locate-button, .buttons-container.moved-up .button-add {
+        bottom: 27%;
+    }
+
+    .dropupFilter {
+        bottom: 3%;
+    }
+
+    .button-add {
+        bottom: 17%;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        overflow: hidden;
+    }
+
+    .locate-button, .button-add, .dropupFilter, .user-button {
+        bottom: 3%;
+        right: 2%;
+    }
+
+    .buttons-container.moved-up .locate-button, .buttons-container.moved-up .button-add {
+        bottom: 30%;
+    }
+
+    .dropupFilter {
+        bottom: 3%;
+    }
+
+    .button-add {
+        bottom: 20%;
+    }
+}
+
+@media (max-width: 600px) {
+    body {
+        overflow: hidden;
+    }
+
+    .locate-button, .button-add, .dropupFilter, .user-button {
+        bottom: 3%;
+        right: 2%;
+    }
+
+    .buttons-container.moved-up .locate-button, .buttons-container.moved-up .button-add {
+        bottom: 32%;
+    }
+
+    .dropupFilter {
+        bottom: 3%;
+    }
+
+    .button-add {
+        bottom: 17%;
+    }
+
+    .locate-button {
+        bottom: 8%;
+    }
+
+    .user-icon {
+        height: 3em;
+    }
+
+    .add-icon, .location-icon {
+        height: 2.5em;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        overflow: hidden;
+    }
+
+    .leaflet-container {
+        width: 100%;
+        height: 93vh;
+    }
+
+    .locate-button, .button-add, .dropupFilter, .user-button {
+        bottom: 3%;
+        right: 2%;
+    }
+
+    .buttons-container.moved-up .locate-button {
+        bottom: 33%;
+    }
+      
+    .buttons-container.moved-up .button-add {
+        bottom: 38%;
+    }
+
+    .buttons-container.moved-up .locate-button, .buttons-container.moved-up .button-add {
+        bottom: 35%;
+    }
+
+    .dropupFilter {
+        bottom: 9.5%;
+    }
+
+    .button-add {
+        bottom: 20%;
+    }
+
+    .locate-button {
+        bottom: 14.5%;
+    }
+
+    .user-icon {
+        height: 3em;
+    }
+
+    .add-icon, .location-icon {
+        height: 2.5em;
+    }
+}
+
+@media (max-width: 400px) {
+    body {
+        overflow: hidden;
+    }
+
+  .locate-button, .button-add, .dropupFilter, .user-button {
+      bottom: 14%;
+      right: 2%;
   }
 
-  .button-add {
-    position: absolute;
-    right: 5px;
-    bottom: 110px;
-    z-index: 1000;
-    background-color: transparent;
-    border-style: none;
-  }
-
-  .dropupFilter {
-    z-index: 1000;
-    position: absolute;
-    right: 10px;
-    bottom: 23px;
-  }
-
-  .eventType {
-    margin-left: .5rem;
-  }
-
-  .location-icon {
-    background-color: white;
-    border-radius: 5px;
-    cursor: pointer; 
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
-    padding: .5em;
-    height: 2em;
-    transition: .3s;
-  }
-
-  .location-icon:hover {
-    background-color: #d4d4d4;
-  }
-
-  .user-button {
-    position: absolute;
-    background-color: transparent;
-    border-style: none;
-    z-index: 1000;
-  }
-
-  .user-icon {
-    cursor: pointer;
-    height: 3.5em;
-    background-color: white;
-    border-radius: 50%;
-    border: 1px solid black;
-  }
-  
-  .add-icon {
-    height: 2em;
-    background-color: white;
-    border-radius: 5px;
-    cursor: pointer; 
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
-    transition: .3s;
-  }
-
-  .add-icon:hover {
-    background-color: #d4d4d4;
-  }
-
-  #backButton {
-    position: absolute;
-    left: 15px;
-  }
-
-  #mapIncident {
-    height: 25em;
-    border-radius: 1em;
-  }
-
-  textarea {
-    resize: none!important;
+  .leaflet-container {
+    width: 100%;
+    height: 93vh;
   }
 
   .buttons-container.moved-up .locate-button {
-    bottom: 31.5vh; /* Ajustar según sea necesario */
+    bottom: 33%;
   }
   
   .buttons-container.moved-up .button-add {
-    bottom: 37.2vh; /* Ajustar según sea necesario */
+    bottom: 38%;
   }
 
-  @media (max-width: 1000px) {
-    .buttons-container.moved-up .locate-button {
-      bottom: 23vh; /* Ajustar según sea necesario */
-    }
-    
-    .buttons-container.moved-up .button-add {
-      bottom: 17vh; /* Ajustar según sea necesario */
-    }
+  .dropupFilter {
+      bottom: 10%;
   }
 
-  @media (max-width: 800px) {
-    .buttons-container.moved-up .locate-button {
-      bottom: 30vh; /* Ajustar según sea necesario */
-    }
-    
-    .buttons-container.moved-up .button-add {
-      bottom: 25.5vh; /* Ajustar según sea necesario */
-    }
+  .button-add {
+      bottom: 21%;
   }
 
-  @media (max-width: 667px) {
-    .buttons-container.moved-up .locate-button {
-      bottom: 32vh; /* Ajustar según sea necesario */
-    }
-    
-    .buttons-container.moved-up .button-add {
-      bottom: 37.4vh; /* Ajustar según sea necesario */
-    }
+  .locate-button {
+      bottom: 15.5%;
+  }
 
-    .user-icon{
-      cursor: pointer;
+  .user-icon {
+      height: 2.8em;
+  }
+
+  .add-icon, .location-icon {
       height: 2.3em;
-      background-color: white;
-      border-radius: 50%;
-      border: 1px solid rgb(165, 165, 165);
-    }
   }
+}
+
+@media (max-width: 360px) {
+    .locate-button, .button-add, .dropupFilter, .user-button {
+        bottom: 3%;
+        right: 2%;
+    }
+
+    .buttons-container.moved-up .locate-button, .buttons-container.moved-up .button-add {
+        bottom: 38%;
+    }
+
+    .dropupFilter {
+        bottom: 3%;
+    }
+
+    .button-add {
+        bottom: 10%;
+    }
+
+    .locate-button {
+        bottom: 8%;
+    }
+
+    .user-icon {
+        height: 2.5em;
+    }
+
+    .add-icon, .location-icon {
+        height: 2em;
+    }
+}
+
+@media (max-width: 320px) {
+    .locate-button, .button-add, .dropupFilter, .user-button {
+        bottom: 3%;
+        right: 2%;
+    }
+
+    .buttons-container.moved-up .locate-button, .buttons-container.moved-up .button-add {
+        bottom: 38%;
+    }
+
+    .dropupFilter {
+        bottom: 3%;
+    }
+
+    .button-add {
+        bottom: 10%;
+    }
+
+    .locate-button {
+        bottom: 8%;
+    }
+
+    .user-icon {
+        height: 2.5em;
+    }
+
+    .add-icon, .location-icon {
+        height: 2em;
+    }
+}
+
+@media (max-width: 280px) {
+    .locate-button, .button-add, .dropupFilter, .user-button {
+        bottom: 3%;
+        right: 2%;
+    }
+
+    .buttons-container.moved-up .locate-button, .buttons-container.moved-up .button-add {
+        bottom: 40%;
+    }
+
+    .dropupFilter {
+        bottom: 3%;
+    }
+
+    .button-add {
+        bottom: 8%;
+    }
+
+    .locate-button {
+        bottom: 8%;
+    }
+
+    .user-icon {
+        height: 2.3em;
+    }
+
+    .add-icon, .location-icon {
+        height: 1.8em;
+    }
+}
+
+@media (max-width: 240px) {
+    .locate-button, .button-add, .dropupFilter, .user-button {
+        bottom: 3%;
+        right: 2%;
+    }
+
+    .buttons-container.moved-up .locate-button, .buttons-container.moved-up .button-add {
+        bottom: 42%;
+    }
+
+    .dropupFilter {
+        bottom: 3%;
+    }
+
+    .button-add {
+        bottom: 6%;
+    }
+
+    .locate-button {
+        bottom: 8%;
+    }
+
+    .user-icon {
+        height: 2em;
+    }
+
+    .add-icon, .location-icon {
+        height: 1.5em;
+    }
+}

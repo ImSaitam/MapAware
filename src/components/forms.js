@@ -80,6 +80,7 @@ export function AddIncident({ onEventAdded, setShowIncidentModal }) {
         mapRef.current.setView([latitude, longitude], 15); // Zoom al lugar de la ubicación actual
       },
       (error) => {
+        mapRef.current.setView([-34.603851, -58.381775], 15);
         {/* console.error("Error al obtener la ubicación:", error); */}
       }
     );

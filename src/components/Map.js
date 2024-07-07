@@ -19,6 +19,7 @@ import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import { Dropdown, ButtonGroup, Form } from "react-bootstrap";
 import { config } from "./config.js";
+import moment from 'moment';
 import markerAccidente from "../images/marker-accidente.svg";
 import markerObras from "../images/marker-obra.svg";
 import markerManifestacion from "../images/marker-manifestacion.svg";
@@ -204,8 +205,7 @@ export default function Map() {
             alt=""
           ></img>
         </button>
-      </div>
-      <div className="dropupFilter">
+        <div className="dropupFilter">
         <Dropdown drop="up" as={ButtonGroup} show={isDropdownOpen}>
           <Dropdown.Toggle variant="success" onClick={toggleDropdown}>
             Filtros
@@ -224,6 +224,7 @@ export default function Map() {
             ))}
           </Dropdown.Menu>
         </Dropdown>
+      </div>
       </div>
       <Modal
         show={showIncidentModal}
@@ -269,6 +270,7 @@ export default function Map() {
                 <h3>{event.category}</h3>
                 <p>{event.description}</p>
                 <p>Gravedad: {event.degree}</p>
+                <p className="eventDate">{moment(event.dateTime).fromNow(true)}</p>
               </Popup>
             </Marker>
           ))}

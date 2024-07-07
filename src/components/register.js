@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import MobileDetect from "mobile-detect";
 import { Form } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../register.css";
@@ -45,8 +46,8 @@ export default function Register() {
   };
 
   function redirectToMobileVersion() {
-    const userAgent = navigator.userAgent.toLowerCase();
-    const isMobile = /iphone|ipad|ipod|android|blackberry|opera mini|windows mobile|palm|iemobile|symbian/i.test(userAgent);
+    const md = new MobileDetect(window.navigator.userAgent);
+    const isMobile = md.mobile() !== null; // Check if it's a mobile device
     const mobileURL = "/registermovil";
     if (isMobile) {
       window.location.href = mobileURL;

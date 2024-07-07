@@ -3,6 +3,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import "../adminPanel.css";
 import axios from 'axios';
+import MobileDetect from 'mobile-detect';
 import { Button } from 'react-bootstrap';
 import {config} from './config.js';
 
@@ -105,6 +106,16 @@ export default function AdminPanel() {
   const handleNextPage = () => {
     setPage(page + 1);
   };
+
+  function redirectToMobileVersion() {
+    const md = new MobileDetect(window.navigator.userAgent);
+    const isMobile = md.mobile() !== null; // Check if it's a mobile device
+    const mobileURL = "/adminMovil";
+    if (isMobile) {
+      window.location.href = mobileURL;
+    }
+  }
+  window.onload = redirectToMobileVersion;
 
   return (
     <div className="profile-container">

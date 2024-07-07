@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import "../profile.css";
 import axios from 'axios';
+import MobileDetect from 'mobile-detect';
 import { Button, Modal } from 'react-bootstrap';
 import {config} from './config.js';
 import ChangeProfileImage from './changeImage.js';
@@ -69,8 +70,8 @@ export default function Profile() {
     setExpandedEventId(expandedEventId === eventId ? null : eventId);
   };
   function redirectToMobileVersion() {
-    const userAgent = navigator.userAgent.toLowerCase();
-    const isMobile = /iphone|ipad|ipod|android|blackberry|opera mini|windows mobile|palm|iemobile|symbian/i.test(userAgent);
+    const md = new MobileDetect(window.navigator.userAgent);
+    const isMobile = md.mobile() !== null; // Check if it's a mobile device
     const mobileURL = "/profilemovil";
     if (isMobile) {
       window.location.href = mobileURL;

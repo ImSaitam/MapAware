@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import MobileDetect from "mobile-detect";
 import axios from "axios";
 import { Form, Alert } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -48,8 +49,8 @@ export function LoginForm() {
   }, [navigate]);
 
   function redirectToMobileVersion() {
-    const userAgent = navigator.userAgent.toLowerCase();
-    const isMobile = /iphone|ipad|ipod|android|linux|blackberry|opera mini|windows mobile|palm|iemobile|symbian/i.test(userAgent);
+    const md = new MobileDetect(window.navigator.userAgent);
+    const isMobile = md.mobile() !== null; // Check if it's a mobile device
     const mobileURL = "/loginMovil";
     if (isMobile) {
       window.location.href = mobileURL;
